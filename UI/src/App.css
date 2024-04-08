@@ -1,0 +1,68 @@
+.App {
+  text-align: center;
+}
+.header {
+  background-color:  #ed6a5a;
+  display: flex;
+}
+.headerLogo {
+  height: 50px;
+  padding: 4px;
+}
+.headerText {
+  padding: 4px;
+  color: #36c9c6;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+}
+.box {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+}
+.login {
+  flex:1;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  background-color: 	#1DB954;
+  justify-content: center;
+}
+.loginContainer {
+  flex: 1;
+  padding: 20;
+  flex-direction: column;
+  display: flex;
+}
+.title {
+  color: #9bc1bc;
+}
+.subtitle {
+  color: #36c9c6;
+}
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
