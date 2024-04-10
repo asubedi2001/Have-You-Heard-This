@@ -15,7 +15,7 @@ function Nav() {
                 className="animate-spin"
               />
             </div>
-            <h1 className="invisible sm:visible">Find Your Sound</h1>
+            <h1 className="invisible sm:visible">Have you heard this?</h1>
           </div>
         </Link>
 
