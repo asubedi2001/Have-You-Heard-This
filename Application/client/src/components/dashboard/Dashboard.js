@@ -4,7 +4,6 @@ import useApi from "../../hooks/useApi.js";
 import Nav from "../Nav.js";
 import Search from "../search/Search.js";
 import Discover from "../discover/Discover.js";
-import Playlist from "../playlist/Playlist.js";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function Dashboard({ code }) {
@@ -21,25 +20,24 @@ function Dashboard({ code }) {
       <BrowserRouter>
         <Nav />
         <Switch>
-          <Route path="/discover">
+          {/* <Route path="/discover">
             <Discover
               spotify={spotify}
               discoverPlaylist={discoverPlaylist}
               playlist={playlist}
               setPlaylist={setPlaylist}
             />
-          </Route>
-          <Route path="/playlist">
+          </Route> */}
+          {/* <Route path="/playlist">
             <Playlist
               spotify={spotify}
               playlist={playlist}
               setPlaylist={setPlaylist}
             />
-          </Route>
+          </Route> */}
           <Route path="/">
             <Search
               spotify={spotify}
-              setDiscoverPlaylist={setDiscoverPlaylist}
             />
           </Route>
         </Switch>

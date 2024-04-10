@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SongTrack from "./SongTrack";
-import Info from "./Info";
+// import Info from "./Info";
 
 function Discover({
   spotify,
@@ -32,7 +32,6 @@ function Discover({
 
   return (
     <>
-      <Info discoverPlaylist={discoverPlaylist} display={display} />
       <div className=" text-center text-sm flex items-center justify-center my-3">
         <div className="flex rounded-3xl border w-80 items-center justify-center p-1 text-stone-300  border-slate-500 text-center">
           <h1 className="text-center flex ">

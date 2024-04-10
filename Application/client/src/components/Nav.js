@@ -38,14 +38,6 @@ function Nav() {
           </a>
         </div>
       </div>
-      <div className="text-slate-100 absolute right-2">
-        <Link to="/playlist">
-          <div className="flex items-center">
-            <h2 className="">Playlist</h2>
-            <img src="playlist.svg" className="px-1" width={30} alt="" />
-          </div>
-        </Link>
-      </div>
     </>
   );
 }
