@@ -19,7 +19,7 @@ function Dashboard({ code }) {
         <Switch>
           <Route path="/likepage">
             <Likes
-              spotift={spotify}
+              spotify={spotify}
             />
           </Route>
           <Route path="/">
