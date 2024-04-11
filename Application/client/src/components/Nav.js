@@ -9,10 +9,9 @@ function Nav() {
           <div className="flex items-center">
             <div className="p-2">
               <img
-                src="record.png"
+                src="akash_logo.png"
                 width={40}
-                alt="record logo"
-                className="animate-spin"
+                alt="logo"
               />
             </div>
             <h1 className="invisible sm:visible">Have you heard this?</h1>
