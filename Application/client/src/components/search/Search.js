@@ -27,7 +27,7 @@ function Search({ spotify }) {
         str = artistIds.join(",");
         spotify.getRecommendations({
           seed_artists: str,
-          target_popularity: sliderVal
+          max_popularity: sliderVal
         }).then(
           (data) => {
             console.log(data.body.tracks);
