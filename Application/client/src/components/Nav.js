@@ -9,7 +9,7 @@ function Nav() {
           <div className="flex items-center">
             <div className="p-2">
               <img
-                src="akash_logo.png"
+                src="aakash_logo.png"
                 width={40}
                 alt="logo"
               />
@@ -19,6 +19,16 @@ function Nav() {
         </Link>
 
         <div className=" flex items-center w-16 text-xs sm:text-sm justify-between">
+        <span>
+          <Link to="/likepage">
+            <img
+              src="spotifyHeart.png"
+              className="cursor-pointer"
+              width={15}
+              alt="likes"
+            />
+          </Link>
+        </span>
           <span>
             <img
               src="gizz.jpg"
