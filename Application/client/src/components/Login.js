@@ -3,7 +3,7 @@ import AnimatedCard from "./motionComponents/AnimatedCard.js";
 import data from "../constants/index.js";
 
 function Login() {
-  const authUrl = `https://accounts.spotify.com/authorize?client_id=${data.CLIENT_ID}&response_type=code&redirect_uri=${data.REDIRECT_URI}&scope=${data.SCOPES}`;
+  const authUrl = `https://accounts.spotify.com/authorize?show_dialog=true&client_id=${data.CLIENT_ID}&response_type=code&redirect_uri=${data.REDIRECT_URI}&scope=${data.SCOPES}`;
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-around ">
