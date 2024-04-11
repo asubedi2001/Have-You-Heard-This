@@ -27,10 +27,10 @@ function Search({ spotify }) {
         str = artistIds.join(",");
         spotify.getRecommendations({
           seed_artists: str,
-          max_popularity: sliderVal
+          max_popularity: sliderVal,
+          min_popularity: (sliderVal-20 > 0 ? sliderVal-20 : 0)
         }).then(
           (data) => {
-            console.log(data.body.tracks);
             setResult(data.body.tracks);
             setIsLoading(false);
           },
@@ -40,17 +40,6 @@ function Search({ spotify }) {
         );
       }
     );
-   
- 
-    
-    // artistStr = artistIds.at(0);
-    // for(let i = 1; i < 5; i++){
-    //   artistStr.concat(",", artistIds[i]);
-    // }
-    // console.log(artistStr);
-    var _opts = {};
-    _opts['target_popularity'] = sliderVal;
-  
   };
 
   return (
@@ -63,7 +52,7 @@ function Search({ spotify }) {
             <input className="min-w-96" id="slider" type="range" onChange={(val) => setSliderVal(val.target.value)}/>
           </div>
           <form className="h-9" onSubmit={searchSubmitHandler}>
-            <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-r-3xl px-3 ">
+            <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
               <img className="" src="search.svg" width={12} alt="search" />
             </button>
           </form>
@@ -81,10 +70,10 @@ function Search({ spotify }) {
                   imgUrl = item.album.images[0].url;
                 }
                 return (
+                  //if you want an on click, put it in this divs properties
                   <div
                     className="flex items-between "
                     key={item.id}
-                    // onClick={() => playlistHandler(item.id)}
                   >
                     <AnimatedCard className=" ">
                       <div className=" flex flex-col items-center cursor-pointer justify-between w-28">

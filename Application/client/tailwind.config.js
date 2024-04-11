@@ -1,6 +1,12 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    extend: {
+      colors: {
+        'myRed' : '#ED6A5A',
+        'background': '#ed9a5a' 
+      }
+    },
     screens: {
       sm: "500px",
       md: "768px",
