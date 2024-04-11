@@ -26,7 +26,7 @@ function Search({ spotify }) {
         }
         str = artistIds.join(",");
         spotify.getRecommendations({
-	  limit = 24,
+	  limit: 24,
           seed_artists: str,
           max_popularity: sliderVal,
           min_popularity: (sliderVal-20 > 0 ? sliderVal-20 : 0)
