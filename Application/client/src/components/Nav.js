@@ -21,7 +21,7 @@ function Nav() {
         <div className=" flex items-center w-16 text-xs sm:text-sm justify-between">
           <span>
             <img
-              src="avatar.png"
+              src="gizz.jpg"
               className="rounded-full border border-slate-900 "
               width={25}
               alt=""
