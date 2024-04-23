@@ -23,14 +23,16 @@ function Search({ spotify }) {
         for(let i = 0; i < 5; i++){
           const str = data.body.items[i].id
           artistIds.push(str)
-        }
+      }
         str = artistIds.join(",");
+        console.log(artistIds);
         spotify.getRecommendations({
           seed_artists: str,
           max_popularity: sliderVal,
           min_popularity: (sliderVal-20 > 0 ? sliderVal-20 : 0)
         }).then(
           (data) => {
+            console.log(data);
             setResult(data.body.tracks);
             setIsLoading(false);
           },
