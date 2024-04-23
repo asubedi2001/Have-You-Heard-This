@@ -28,8 +28,9 @@ function Search({ spotify }) {
         console.log(artistIds);
         spotify.getRecommendations({
           seed_artists: str,
-          max_popularity: sliderVal,
-          min_popularity: (sliderVal-20 > 0 ? sliderVal-20 : 0)
+          max_popularity: (sliderVal+5 < 100 ? sliderVal+5 : 100),
+          min_popularity: (sliderVal-20 > 0 ? sliderVal-20 : 0),
+          limit: 100
         }).then(
           (data) => {
             console.log(data);
@@ -74,14 +75,14 @@ function Search({ spotify }) {
                 return (
                   //if you want an on click, put it in this divs properties
                   <div
-                    className="flex items-between "
+                    className="flex justify-center"
                     key={item.id}
                   >
-                    <AnimatedCard className=" ">
-                      <div className=" flex flex-col items-center cursor-pointer justify-between w-28">
-                        <img className="" src={imgUrl} alt="" width={100} />
-                        <h1 className="text-slate-300 text-xs">{item.name}</h1>
-                        <h1 className="text-slate-300 text-xs">by {item.artists[0].name}</h1>
+                    <AnimatedCard>
+                      <div className=" flex flex-col items-center cursor-pointer justify-between w-28 shadow-md rounded-lg shadow-indigo-950 bg-blue-950">
+                        <img className="rounded-md self-center" src={imgUrl} alt="album" width={100} />
+                        <h1 className="text-slate-300 text-xs font-semibold">{item.name}</h1>
+                        <h1 className="text-slate-300 text-xs font-semibold">by {item.artists[0].name}</h1>
                       </div>
                     </AnimatedCard>
                   </div>

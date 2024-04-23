@@ -25,7 +25,7 @@ function Login() {
         <img className="shadow-lg shadow-indigo-950" src="loginAlbum8.jpeg" width={125} />
         <img className="shadow-lg shadow-indigo-950" src="loginAlbum9.jpeg" width={125} />
       </div>
-      <div className="mx auto rounded-md bg-gray-300 shadow-lg shadow-indigo-950">
+      <div className="mx auto rounded-md bg-blue-900 shadow-lg shadow-indigo-950">
         <a href={authUrl}>
           <AnimatedCard>
             <div className="mx-auto border rounded-md p-2 bg-green-400">
