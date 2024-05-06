@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AnimatedCard from "../motionComponents/AnimatedCard.js";
+import SongTrack from "../discover/SongTrack.js";
+import Info from "../discover/Info.js";
+
 
 function Search({ spotify }) {
   const history = useHistory();
@@ -8,6 +11,13 @@ function Search({ spotify }) {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState();
   const [sliderVal, setSliderVal] = useState(50);
+  const [display, setDisplay] = useState({
+    song: "",
+    image: "",
+    artist: "",
+    warn: "",
+    success: "",
+  });
 
   const searchSubmitHandler = (e) => {
 
@@ -24,7 +34,8 @@ function Search({ spotify }) {
           const str = data.body.items[i].id
           artistIds.push(str)
       }
-        str = artistIds.join(",");
+        
+	str = artistIds.join(",");
         console.log(artistIds);
         spotify.getRecommendations({
 	  limit: 24,
@@ -35,8 +46,8 @@ function Search({ spotify }) {
         }).then(
           (data) => {
             console.log(data);
-            setResult(data.body.tracks);
-            setIsLoading(false);
+	     setResult(data.body.tracks);
+	    setIsLoading(false);
           },
           (err) => {
             console.error(err);
@@ -65,32 +76,29 @@ function Search({ spotify }) {
           {isLoading ? (
             ""
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 m-w-full sm:w-3/4 lg:gird-cols-7 gap-6">
-              {result.map((item) => {
-                let imgUrl;
-                if (!item.album.images[0]) {
-                  imgUrl = "playlist.png";
-                } else {
-                  imgUrl = item.album.images[0].url;
-                }
-                return (
-                  //if you want an on click, put it in this divs properties
-                  <div
-                    className="flex justify-center"
-                    key={item.id}
-                  >
-                    <AnimatedCard>
-                      <div className=" flex flex-col items-center cursor-pointer justify-between w-28 shadow-md rounded-lg shadow-indigo-950 bg-blue-950">
-                        <img className="rounded-md self-center" src={imgUrl} alt="album" width={100} />
-                        <h1 className="text-slate-300 text-xs font-semibold">{item.name}</h1>
-                        <h1 className="text-slate-300 text-xs font-semibold">by {item.artists[0].name}</h1>
-                      </div>
-                    </AnimatedCard>
-                  </div>
+            <div className="grid grid-cols-4 md:grid-cols-10 gap-x-1 max-h-fit">
+            {result.map((item) => {
+              let imgUrl;
+              if (!item.album.images[0]) {
+                imgUrl = "album.png";
+              } else {
+                imgUrl = item.album.images[0].url;
+              }
+              return (
+                <SongTrack
+                  imgUrl={imgUrl}
+                  key={item.id}
+                  id={item.id}
+                  audioUrl={item.preview_url}
+                  song={item.name}
+                  artist={item.artists[0].name}
+                  uri={item.uri}
+                  spotify={spotify}
+                  />
                 );
               })}
-            </div>
-          )}
+            </div> 
+	  )}
         </div>
       </div>
     </>
