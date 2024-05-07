@@ -1,10 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AnimatedCard from "./motionComponents/AnimatedCard.js";
+import axios from "axios";
 
 function Nav({ spotify }) {
   const [userProfile, setUserProfile] = useState(null);
+  const history = useHistory();
 
+  // Function to add user
+  const addUser = async (spotify_id, display_name, email, pfp) => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/adduser', JSON.stringify({
+        spotify_id,
+        display_name,
+        email,
+        pfp
+      }), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.status === 200) {
+        console.log('User added successfully');
+      } else {
+        console.error('Failed to add user');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+ 
   useEffect(() => {
     const fetchUserProfile = () => {
       if (!spotify) {
@@ -15,6 +41,8 @@ function Nav({ spotify }) {
         (data) => {
           console.log(data.body);
           setUserProfile(data.body);
+          console.log('User attempting to add.');
+          addUser(data.body.spotify_id, data.body.display_name, data.body.email, data.body.images[0]);
         },
         (err) => {
           console.error(err);

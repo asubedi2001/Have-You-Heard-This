@@ -1,0 +1,4 @@
+DELETE FROM UserLikes;
+DELETE FROM UserDislikes;
+DELETE FROM User;
+DELETE FROM Song;
