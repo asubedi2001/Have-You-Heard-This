@@ -135,4 +135,50 @@ app.post('/api/addlike', (req, res) => {
   }
 });
 
+// API endpoint to handle SQL script to add all recommended songs
+app.post('/api/addsong', (req, res) => {
+  console.log("add user request");
+  const { track_id, track_name, track_cover, track_preview } = req.body;
+
+  // Open the database
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+
+  // SQL query to check if the user exists
+  const sql = 'SELECT * FROM Song WHERE track_id = ?';
+
+  // Execute the query
+  db.all(sql, [track_id], (err, rows) => {
+    if (err) {
+      console.error('Error querying database:', err);
+      res.sendStatus(500); // Send error response
+      return;
+    }
+
+    // Check if the user already exists
+    const existingEntry = rows.length > 0;
+
+    // If the user doesn't exist, insert a new entry
+    if (!existingEntry) {
+      console.log('Inserting song:', track_id, track_name);
+      db.run('INSERT INTO Song (track_id, track_name, track_cover, track_preview) VALUES (?, ?, ?, ?)', 
+          [track_id, track_name, track_cover, track_preview], (err) => {
+          if (err) {
+            console.error('Error inserting song:', err);
+            res.sendStatus(500); // Send error response
+          } else {
+            console.log('Song added successfully');
+            res.sendStatus(200); // Send success response
+          }
+          // Close the database connection
+          db.close();
+        });
+    } else {
+      console.log(`Entry with Track ID ${track_id} already exists`);
+      res.sendStatus(409); // Send conflict response if entry already exists
+      // Close the database connection
+      db.close();
+    }
+  });
+});
+
 app.listen(3001);

@@ -8,11 +8,8 @@ CREATE TABLE User (
 CREATE TABLE Song (
     track_id VARCHAR(255) PRIMARY KEY,
     track_name VARCHAR(255),
-    album_cover VARCHAR(255),
-    artist_id VARCHAR(255),
-    genre_id VARCHAR(255),
-    FOREIGN KEY (artist_id) REFERENCES Artist(artist_id),
-    FOREIGN KEY (genre_id) REFERENCES Genre(genre_id)
+    track_cover VARCHAR(255),
+    track_preview VARCHAR(255)
 );
 
 CREATE TABLE UserLikes (
