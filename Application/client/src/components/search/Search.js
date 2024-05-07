@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import AnimatedCard from "../motionComponents/AnimatedCard.js";
 import SongTrack from "../discover/SongTrack.js";
 import Info from "../discover/Info.js";
-
+import axios from "axios";
 
 function Search({ spotify }) {
   const history = useHistory();
@@ -18,6 +18,50 @@ function Search({ spotify }) {
     warn: "",
     success: "",
   });
+
+  // Function to add song to Table of all recommended songs.
+  const addTrack = async (track_id, track_name) => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/addsong', JSON.stringify({
+        track_id,
+        track_name
+      }), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.status === 200) {
+        console.log('User added successfully');
+      } else {
+        console.error('Failed to add user');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // Function to add user like
+  const addLike = async (spotify_id, track_id) => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/addlike', JSON.stringify({
+        spotify_id,
+        track_id
+      }), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.status === 200) {
+        console.log('User added successfully');
+      } else {
+        console.error('Failed to add user');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const searchSubmitHandler = (e) => {
 
@@ -84,6 +128,7 @@ function Search({ spotify }) {
               } else {
                 imgUrl = item.album.images[0].url;
               }
+              addTrack(item.uri, item.name);
               return (
                 <SongTrack
                   imgUrl={imgUrl}
