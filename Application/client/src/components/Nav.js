@@ -1,8 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import AnimatedCard from "./motionComponents/AnimatedCard.js";
 
-function Nav() {
+function Nav({ spotify }) {
+  const [userProfile, setUserProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchUserProfile = () => {
+      if (!spotify) {
+        console.log("empty access token");
+        return;
+      }
+      spotify.getMe().then(
+        (data) => {
+          console.log(data.body);
+          setUserProfile(data.body);
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    };
+
+    fetchUserProfile();
+  }, [spotify]);
+
   return (
     <>
       <div className="text flex items-center  justify-between bg-blue-950">
@@ -32,21 +54,37 @@ function Nav() {
             </Link>
           </AnimatedCard>
         </span>
+        {userProfile && userProfile.images && userProfile.images.length > 0 ? (
           <span>
-            <img
-              src="gizz.jpg"
-              className="rounded-full border border-slate-900 "
-              width={25}
-              alt=""
-            />
+            <Link to="/userinfo">
+              <img
+                src={userProfile.images[0].url}
+                alt="User Profile"
+                className="rounded-full border border-slate-900"
+                width={25}
+              />
+            </Link>
           </span>
-          <a href="/">
-            <img
-              src="logout.svg"
-              className="cursor-pointer"
-              width={15}
-              alt="logout"
-            />
+        ) : (
+          <span>
+            <Link to="/userinfo">
+              <img
+                src="gizz.jpg"
+                alt="Default Profile"
+                className="rounded-full border border-slate-900"
+                width={25}
+              />
+            </Link>
+          </span>
+          
+        )}
+        <a href="/">
+          <img
+            src="logout.svg"
+            className="cursor-pointer"
+            width={15}
+            alt="logout"
+          />
           </a>
         </div>
       </div>
