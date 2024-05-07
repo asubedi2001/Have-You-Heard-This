@@ -42,7 +42,7 @@ function Nav({ spotify }) {
           console.log(data.body);
           setUserProfile(data.body);
           console.log('User attempting to add.');
-          addUser(data.body.spotify_id, data.body.display_name, data.body.email, data.body.images[0]);
+          addUser(data.body.uri, data.body.display_name, data.body.email, data.body.images[0].url);
         },
         (err) => {
           console.error(err);

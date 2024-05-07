@@ -64,28 +64,46 @@ app.post("/refresh", (req, res) => {
 app.post('/api/adduser', (req, res) => {
   console.log("add user request");
   const { spotify_id, display_name, email, pfp } = req.body;
-  try {
-      const db = open({
-          filename: './database/utr.sqlite3', // Adjusted filename
-          driver: sqlite3.Database
-      });
 
-      // check if entry with the same data exists
-      const existingEntry = db.get('SELECT * FROM User WHERE spotify_id = ?', spotify_id);
-      
-      // if entry does not exist, create an entry with this data
-      if (!existingEntry) {
-          db.run('INSERT INTO User (spotify_id, display_name, email, pfp) VALUES (?, ?, ?, ?)', spotify_id, display_name, email, pfp);
-          res.sendStatus(200); // Send success response
-      } else {
-          console.log(`Entry with Spotify ID ${spotify_id} already exists`);
-          res.sendStatus(409); // Send conflict response if entry already exists
-      }
-      res.sendStatus(200); // Send success response
-  } catch (error) {
-      console.error('Error:', error);
+  // Open the database
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+
+  // SQL query to check if the user exists
+  const sql = 'SELECT * FROM User WHERE spotify_id = ?';
+
+  // Execute the query
+  db.all(sql, [spotify_id], (err, rows) => {
+    if (err) {
+      console.error('Error querying database:', err);
       res.sendStatus(500); // Send error response
-  }
+      return;
+    }
+
+    // Check if the user already exists
+    const existingEntry = rows.length > 0;
+
+    // If the user doesn't exist, insert a new entry
+    if (!existingEntry) {
+      console.log('Inserting user:', spotify_id, display_name, email, pfp);
+      db.run('INSERT INTO User (spotify_id, display_name, email, pfp) VALUES (?, ?, ?, ?)', 
+        [spotify_id, display_name, email, pfp], (err) => {
+          if (err) {
+            console.error('Error inserting user:', err);
+            res.sendStatus(500); // Send error response
+          } else {
+            console.log('User added successfully');
+            res.sendStatus(200); // Send success response
+          }
+          // Close the database connection
+          db.close();
+        });
+    } else {
+      console.log(`Entry with Spotify ID ${spotify_id} already exists`);
+      res.sendStatus(409); // Send conflict response if entry already exists
+      // Close the database connection
+      db.close();
+    }
+  });
 });
 
 // API endpoint to handle SQL script to add user's liked song
