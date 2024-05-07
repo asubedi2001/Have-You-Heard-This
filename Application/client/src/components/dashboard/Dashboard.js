@@ -4,6 +4,7 @@ import useApi from "../../hooks/useApi.js";
 import Nav from "../Nav.js";
 import Search from "../search/Search.js";
 import Likes from "../likes/Likes.js";
+import Userpage from "../userpage/Userpage.js";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function Dashboard({ code }) {
@@ -17,15 +18,14 @@ function Dashboard({ code }) {
       <BrowserRouter>
         <Nav spotify={spotify}/>
         <Switch>
+          <Route path="/userinfo">
+            <Userpage spotify={spotify} />
+          </Route>
           <Route path="/likepage">
-            <Likes
-              spotify={spotify}
-            />
+            <Likes spotify={spotify} />
           </Route>
           <Route path="/">
-            <Search
-              spotify={spotify}
-            />
+            <Search spotify={spotify} />
           </Route>
         </Switch>
       </BrowserRouter>
