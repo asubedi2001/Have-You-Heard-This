@@ -57,7 +57,6 @@ function SongTrack({
       });
       return;
     }
-    setDisplay({ song, artist, image: imgUrl, warn: false });
   };
   useEffect(() => {
     setAudio(new Audio(audioUrl));

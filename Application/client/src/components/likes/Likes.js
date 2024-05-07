@@ -1,30 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AnimatedCard from "../motionComponents/AnimatedCard.js";
+import SongTrack from "../discover/SongTrack.js";
+import Info from "../discover/Info.js";
+
 
 function Likes({ spotify }) {
   const history = useHistory();
   const [result, setResult] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState();
+  const [sliderVal, setSliderVal] = useState(50);
+  const [display, setDisplay] = useState({
+    song: "",
+    image: "",
+    artist: "",
+    warn: "",
+    success: "",
+  });
 
   const showLikes = (e) => {
+
     e.preventDefault();
     if (!spotify) {
       console.log("empty access token");
       return;
     }
-    spotify.getMySavedTracks({
+	  spotify.getMySavedTracks({
       limit: 50
     }).then(
-      (data) => {
-        console.log(data.body.items);
-        setResult(data.body.items);
-        setIsLoading(false);
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+        (data) => {
+          console.log(data.body.items);
+          setResult(data.body.items);
+            setIsLoading(false);
+      	  },
+          (err) => {
+            console.error(err);
+          }
+        );
   };
 
   return (
@@ -33,45 +46,38 @@ function Likes({ spotify }) {
         <div className="flex flex-col items-center p-2 m-2 min-w-full">
           <h1 className="text-slate-100 pb-2">Here are the songs you've liked:</h1>
           <form className="h-9" onSubmit={showLikes}>
-            <button className="">
-                <AnimatedCard className=" ">
-                    <div className=" flex flex-col items-center cursor-pointer justify-between w-36">
-                        <img className="" src={"showmelikes.png"} alt=""/>
-                    </div>
-                </AnimatedCard>
+            <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
+              <img className="" src="search.svg" width={12} alt="search" />
             </button>
-          </form>
-        </div>
+	  </form>
+	</div>
         <div className="  min-h-3/4 min-w-full flex items-center justify-center ">
           {isLoading ? (
-            <h1 className="text-slate-100 pb-2">Display your likes with the button above!</h1>
+            ""
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 m-w-full sm:w-3/4 lg:gird-cols-7 gap-6">
-              {result.map((item) => {
-                console.log(item);
-                let imgUrl;
-                if (!item.track.album.images[0]) {
-                  imgUrl = "playlist.png";
-                } else {
-                  imgUrl = item.track.album.images[0].url;
-                }
-                return (
-                  <div
-                    className="flex items-between "
-                    key={item.id}
-                  >
-                    <AnimatedCard className=" ">
-                      <div className=" flex flex-col items-center cursor-pointer justify-between w-28">
-                        <img className="" src={imgUrl} alt="" width={100} />
-                        <h1 className="text-slate-300 text-xs">{item.track.name}</h1>
-                        <h1 className="text-slate-300 text-xs">by {item.track.artists[0].name}</h1>
-                      </div>
-                    </AnimatedCard>
-                  </div>
+            <div className="grid grid-cols-4 md:grid-cols-10 gap-x-1 max-h-fit">
+            {result.map((item) => {
+              let imgUrl;
+              if (!item.track.album.images[0]) {
+                imgUrl = "album.png";
+              } else {
+                imgUrl = item.track.album.images[0].url;
+              }
+              return (
+                <SongTrack
+                  imgUrl={imgUrl}
+                  key={item.track.id}
+                  id={item.track.id}
+                  audioUrl={item.track.preview_url}
+                  song={item.track.name}
+                  artist={item.track.artists[0].name}
+                  uri={item.track.uri}
+                  spotify={spotify}
+                  />
                 );
               })}
-            </div>
-          )}
+            </div> 
+	  )}
         </div>
       </div>
     </>
