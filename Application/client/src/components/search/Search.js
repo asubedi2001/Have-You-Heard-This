@@ -20,11 +20,13 @@ function Search({ spotify }) {
   });
 
   // Function to add song to Table of all recommended songs.
-  const addTrack = async (track_id, track_name) => {
+  const addTrack = async (track_id, track_name, track_cover, track_preview) => {
     try {
       const response = await axios.post('http://localhost:3001/api/addsong', JSON.stringify({
         track_id,
-        track_name
+        track_name,
+        track_cover,
+        track_preview
       }), {
         headers: {
           'Content-Type': 'application/json'
@@ -128,7 +130,7 @@ function Search({ spotify }) {
               } else {
                 imgUrl = item.album.images[0].url;
               }
-              addTrack(item.uri, item.name);
+              addTrack(item.uri, item.name, imgUrl, item.preview_url);
               return (
                 <SongTrack
                   imgUrl={imgUrl}
