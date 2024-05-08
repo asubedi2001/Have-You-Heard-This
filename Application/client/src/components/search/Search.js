@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import AnimatedCard from "../motionComponents/AnimatedCard.js";
 import SongTrack from "../discover/SongTrack.js";
-import Info from "../discover/Info.js";
 import axios from "axios";
 
 function Search({ spotify }) {
@@ -34,9 +32,9 @@ function Search({ spotify }) {
       });
       
       if (response.status === 200) {
-        console.log('User added successfully');
+        console.log('Track added successfully');
       } else {
-        console.error('Failed to add user');
+        console.error('Failed to add track');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -56,9 +54,9 @@ function Search({ spotify }) {
       });
       
       if (response.status === 200) {
-        console.log('User added successfully');
+        console.log('Like added successfully');
       } else {
-        console.error('Failed to add user');
+        console.error('Failed to add like');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -79,12 +77,12 @@ function Search({ spotify }) {
         for(let i = 0; i < 5; i++){
           const str = data.body.items[i].id
           artistIds.push(str)
-      }
+        }
         
-	str = artistIds.join(",");
+	      str = artistIds.join(",");
         console.log(artistIds);
         spotify.getRecommendations({
-	  limit: 24,
+	        limit: 24,
           seed_artists: str,
           max_popularity: (sliderVal+5 < 100 ? sliderVal+5 : 100),
           min_popularity: (sliderVal-20 > 0 ? sliderVal-20 : 0),
@@ -92,8 +90,8 @@ function Search({ spotify }) {
         }).then(
           (data) => {
             console.log(data);
-	     setResult(data.body.tracks);
-	    setIsLoading(false);
+	          setResult(data.body.tracks);
+	          setIsLoading(false);
           },
           (err) => {
             console.error(err);
@@ -119,9 +117,8 @@ function Search({ spotify }) {
           </form>
         </div>
         <div className="  min-h-3/4 min-w-full flex items-center justify-center ">
-          {isLoading ? (
-            ""
-          ) : (
+          {isLoading ? ("") : 
+          (
             <div className="grid grid-cols-4 md:grid-cols-10 gap-x-1 max-h-fit">
             {result.map((item) => {
               let imgUrl;
@@ -145,7 +142,7 @@ function Search({ spotify }) {
                 );
               })}
             </div> 
-	  )}
+	        )}
         </div>
       </div>
     </>

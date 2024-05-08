@@ -84,25 +84,29 @@ function Nav({ spotify }) {
         </span>
         {userProfile && userProfile.images && userProfile.images.length > 0 ? (
           <span>
-            <Link to="/userinfo">
-              <img
-                src={userProfile.images[0].url}
-                alt="User Profile"
-                className="rounded-full border border-slate-900"
-                width={25}
-              />
-            </Link>
+            <AnimatedCard>
+              <Link to="/userinfo">
+                <img
+                  src={userProfile.images[0].url}
+                  alt="User Profile"
+                  className="rounded-full border border-slate-900"
+                  width={25}
+                />
+              </Link>
+            </AnimatedCard>
           </span>
         ) : (
           <span>
-            <Link to="/userinfo">
-              <img
-                src="gizz.jpg"
-                alt="Default Profile"
-                className="rounded-full border border-slate-900"
-                width={25}
-              />
-            </Link>
+            <AnimatedCard>
+              <Link to="/userinfo">
+                <img
+                  src="gizz.jpg"
+                  alt="Default Profile"
+                  className="rounded-full border border-slate-900"
+                  width={25}
+                />
+              </Link>
+            </AnimatedCard>
           </span>
           
         )}

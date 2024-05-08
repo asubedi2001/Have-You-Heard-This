@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import AnimatedCard from "../motionComponents/AnimatedCard.js";
 import SongTrack from "../discover/SongTrack.js";
-import Info from "../discover/Info.js";
 
 
 function Likes({ spotify }) {
@@ -29,15 +27,15 @@ function Likes({ spotify }) {
 	  spotify.getMySavedTracks({
       limit: 50
     }).then(
-        (data) => {
-          console.log(data.body.items);
-          setResult(data.body.items);
-            setIsLoading(false);
-      	  },
-          (err) => {
-            console.error(err);
-          }
-        );
+      (data) => {
+        console.log(data.body.items);
+        setResult(data.body.items);
+          setIsLoading(false);
+      	},
+        (err) => {
+          console.error(err);
+        }
+    );
   };
 
   return (
@@ -49,12 +47,10 @@ function Likes({ spotify }) {
             <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
               <img className="" src="search.svg" width={12} alt="search" />
             </button>
-	  </form>
-	</div>
+	        </form>
+	      </div>
         <div className="  min-h-3/4 min-w-full flex items-center justify-center ">
-          {isLoading ? (
-            ""
-          ) : (
+          {isLoading ? ("") : (
             <div className="grid grid-cols-4 md:grid-cols-10 gap-x-1 max-h-fit">
             {result.map((item) => {
               let imgUrl;
@@ -77,7 +73,7 @@ function Likes({ spotify }) {
                 );
               })}
             </div> 
-	  )}
+	         )}
         </div>
       </div>
     </>

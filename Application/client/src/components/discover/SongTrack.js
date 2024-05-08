@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
+import AnimatedCard from "../motionComponents/AnimatedCard";
 function SongTrack({
   imgUrl,
   id,
@@ -30,7 +31,7 @@ function SongTrack({
       }
     );
   };
-  const addSongHandler = () => {
+  const addDislikeHandler = () => {
     const value = {
       uuid: uuidv4(),
       imgUrl,
@@ -68,17 +69,17 @@ function SongTrack({
       onMouseOver={play}
       onMouseOut={pause}
     >
-      <motion.img
+      <img
         whileTap={{ scale: "0.8" }}
-        className="absolute left-0 top-0 w-4 sm:w-8 p-1 cursor-pointer"
-        src="bookmark.svg"
-        onClick={() => addSongHandler()}
+        className="absolute left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer rotate-180"
+        src="aakash_unliked.png"
+        onClick={() => addDislikeHandler()}
         alt=""
       />
 
       <motion.img
         whileTap={{ scale: "0.8" }}
-        className="absolute top-0 right-0 w-4 sm:w-8 p-1 cursor-pointer"
+        className="absolute bottom-0 right-0 w-4 sm:w-8 p-1 cursor-pointer"
         src="like.svg"
         onClick={() => likeSongHandler(id)}
         alt=""
