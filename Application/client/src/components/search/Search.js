@@ -106,10 +106,10 @@ function Search({ spotify }) {
     <>
       <div className="flex flex-col items-center ml-1 ">
         <div className="flex flex-col items-center p-2 m-2 min-w-full">
-          <h1 className="text-slate-100 pb-2">How popular should it be?</h1>
-          <h1 className="text-slate-100 pb-2">{sliderVal}% Popularity</h1>
-          <div className="flex flex-col items-center">
-            <input className="min-w-96" id="slider" type="range" onChange={(val) => setSliderVal(val.target.value)}/>
+          <h1 className="text-slate-100 text-xl pb-2">How popular should it be?</h1>
+          <h1 className="text-slate-100 text-lg pb-2">{sliderVal}% Popularity</h1>
+          <div className="flex flex-col items-center min-w-full">
+            <input className="w-5/12" id="slider" type="range" onChange={(val) => setSliderVal(val.target.value)}/>
           </div>
           <form className="h-9" onSubmit={searchSubmitHandler}>
             <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
