@@ -64,9 +64,6 @@ function UTRLikes({ spotify }) {
       <div className="flex flex-col items-center ml-1 ">
         <div className="flex flex-col items-center p-2 m-2 min-w-full">
           <h1 className="text-slate-100 pb-2">Here are the songs you've liked:</h1>
-          <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
-            <img className="" src="search.svg" width={12} alt="search" />
-          </button>
         </div>
         <div className="min-h-3/4 min-w-full flex items-center justify-center ">
           {userLikes && (

@@ -61,6 +61,10 @@ function SongTrack({
             if (response.status === 200) {
               console.log('Like added successfully');
               document.getElementById(song).src = "aakash_liked.png";
+              document.getElementById(id).src = "aakash_dislike.png";
+            } else if (response.status === 202) {
+              console.log('Like removed successfully');
+              document.getElementById(song).src = "aakash_unliked.png";
             } else {
               console.error('Failed to add like');
             }
@@ -100,10 +104,14 @@ function SongTrack({
           });
 
           if (response.status === 200) {
-            console.log('Like added successfully');
-            document.getElementById(id).src = "aakash_disliked.png";
+            console.log('Dislike added successfully');
+            document.getElementById(id).src = "aakash_disliked2.png";
+            document.getElementById(song).src = "aakash_unliked.png";
+          } else if (response.status === 202){
+            console.log('Dislike removed successfully');
+            document.getElementById(id).src = "aakash_dislike.png";
           } else {
-            console.error('Failed to add like');
+            console.error('Failed to toggle dislike');
           }
         } catch (error) {
           console.error('Error:', error);
@@ -146,7 +154,7 @@ function SongTrack({
             }
           });
           if (response.status === 200) {
-            document.getElementById(id).src = "aakash_disliked.png";
+            document.getElementById(id).src = "aakash_disliked2.png";
           } else {
             document.getElementById(id).src = "aakash_dislike.png";
             console.error('Failed to add like');
@@ -194,7 +202,7 @@ function SongTrack({
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="aakash_dislike.png"
-              onClick={() => addDislikeHandler(imgUrl, uri)}
+              onClick={() => addDislikeHandler(imgUrl, uri, song)}
               alt=""
             />
             <motion.img id={song}

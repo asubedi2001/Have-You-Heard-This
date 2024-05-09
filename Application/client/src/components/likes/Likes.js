@@ -55,8 +55,8 @@ function Likes({ spotify }) {
               return (
                 <SongTrack
                   imgUrl={imgUrl}
-                  key={item.track.id}
-                  id={item.track.id}
+                  key={item.track.uri}
+                  id={item.track.uri}
                   audioUrl={item.track.preview_url}
                   song={item.track.name}
                   artist={item.track.artists[0].name}

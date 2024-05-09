@@ -70,11 +70,23 @@ function Nav({ spotify }) {
         </Link>
 
         <div className="flex items-center w-17 text-xs space-x-8 sm:text-sm justify-between">
-        <span>
+        <span>         
+          <AnimatedCard>
+            <Link to="/UTRdislikes">
+              <img
+                src="aakash_disliked2.png"
+                className="cursor-pointer"
+                width={35}
+                alt="Likes"
+              />
+            </Link>
+          </AnimatedCard>
+        </span>
+        <span>         
           <AnimatedCard>
             <Link to="/UTRlikes">
               <img
-                src="likes.svg"
+                src="aakash_liked.png"
                 className="cursor-pointer"
                 width={35}
                 alt="Likes"
@@ -139,3 +151,4 @@ function Nav({ spotify }) {
 }
 
 export default Nav;
+

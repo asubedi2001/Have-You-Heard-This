@@ -149,8 +149,8 @@ function Search({ spotify }) {
               return (
                 <SongTrack
                   imgUrl={imgUrl}
-                  key={item.id}
-                  id={item.id}
+                  key={item.uri}
+                  id={item.uri}
                   audioUrl={item.preview_url}
                   song={item.name}
                   artist={item.artists[0].name}
