@@ -123,8 +123,7 @@ app.post('/api/addlike', (req, res) => {
   
       // Check if the user already exists
       const existingEntry = rows.length > 0;
-      const sanityCheck = db.all('SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?', user, id);
-      console.log(existingEntry);
+      
       // If the user doesn't exist, insert a new entry
       if (!existingEntry) {
         console.log('Inserting user:', user, id);
@@ -137,14 +136,29 @@ app.post('/api/addlike', (req, res) => {
               console.log('Song inserted successfully');
               res.sendStatus(200); // Send success response
             }
-            // Close the database connection
-            db.close();
           });
+
+          db.run('DELETE FROM UserDislikes WHERE (spotify_id = ? AND track_id = ?)', 
+          [user, id], (err) => {
+            if (err) {
+              console.error('Error removing disliking:', err);
+            } else {
+              console.log('Song dislike removed successfully');
+            }
+          });
+
       } else {
         console.log(`Entry with Spotify ID ${user} and track id ${id} already exists`);
-        res.sendStatus(409); // Send conflict response if entry already exists
-        // Close the database connection
-        db.close();
+        db.run('DELETE FROM UserLikes WHERE (spotify_id = ? AND track_id = ?)', 
+          [user, id], (err) => {
+            if (err) {
+              console.error('Error deleting song:', err);
+              res.sendStatus(500); // Send error response
+            } else {
+              console.log('Song deleted successfully');
+              res.sendStatus(202); // Send success response
+            }
+          });
       }
     });
   } catch (error) {
@@ -182,14 +196,27 @@ app.post('/api/adddislike', (req, res) => {
               console.log('Song inserted successfully');
               res.sendStatus(200); // Send success response
             }
-            // Close the database connection
-            db.close();
           });
+        db.run('DELETE FROM UserLikes WHERE (spotify_id = ? AND track_id = ?)', 
+        [user, id], (err) => {
+          if (err) {
+            console.error('Error removing like', err);
+          } else {
+            console.log('Song like removed successfully');
+          }
+        });
       } else {
         console.log(`Entry with Spotify ID ${user} and track id ${id} already exists`);
-        res.sendStatus(409); // Send conflict response if entry already exists
-        // Close the database connection
-        db.close();
+        db.run('DELETE FROM UserDislikes WHERE (spotify_id = ? AND track_id = ?)', 
+          [user, id], (err) => {
+            if (err) {
+              console.error('Error un disliking:', err);
+              res.sendStatus(500); // Send error response
+            } else {
+              console.log('Song un disliked successfully');
+              res.sendStatus(202); // Send success response
+            }
+          });
       }
     });
   } catch (error) {
@@ -231,21 +258,16 @@ app.get('/api/getlikes', (req, res) => {
   }
 });
 
-// API endpoint to handle SQL script to get ALL of user's liked songs.
+// API endpoint to handle SQL script to get ALL of user's disliked songs.
 app.get('/api/getdislikes', (req, res) => {
-  console.log("get likes request");
+  console.log("get dislikes request");
   console.log(req.query);
   const spotify_id = req.query.spotify_id;
   console.log(spotify_id);
   let db = new sqlite3.Database('./database/utr.sqlite3');
   try {
-    const sanityCheck = db.all('SELECT * FROM UserLikes JOIN Song ON UserLikes.track_id=Song.track_id WHERE spotify_id = ?', spotify_id);
-      console.log(sanityCheck);
-
-
-
     const sql = 'SELECT * \
-    FROM UserLikes \
+    FROM UserDislikes \
     JOIN Song \
     ON UserDislikes.track_id=Song.track_id \
     WHERE UserDislikes.spotify_id = ?';
@@ -266,7 +288,7 @@ app.get('/api/getdislikes', (req, res) => {
 
 // API endpoint to handle SQL script to add user's liked song
 app.post('/api/getlike', (req, res) => {
-  console.log("add like request");
+  console.log("get like request");
   const { id, user } = req.body;
   console.log(user);
   let db = new sqlite3.Database('./database/utr.sqlite3');

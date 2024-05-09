@@ -5,7 +5,7 @@ import axios from "axios";
 
 function UTRDislikes({ spotify }) {
   console.log("UTR Dislikes being created...");
-  const [userLikes, setUserLikes] = useState(null);
+  const [userDislikes, setUserDislikes] = useState(null);
   
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -17,7 +17,7 @@ function UTRDislikes({ spotify }) {
         spotify.getMe().then(
             async (data) => {
               console.log("in data scope" + data.body.uri);
-              getUserLikes(data.body.uri);
+              getUserDislikes(data.body.uri);
             });
       } catch (err) {
         console.error(err);
@@ -29,7 +29,7 @@ function UTRDislikes({ spotify }) {
   }, [spotify]);
 
   // Function to get all user UTR likes.
-  const getUserLikes = async (spotify_id) => {
+  const getUserDislikes = async (spotify_id) => {
     console.log("START GUL SPOTIFYID");
     console.log(spotify_id);
     console.log("END GUL SPOTIFYID");
@@ -45,7 +45,8 @@ function UTRDislikes({ spotify }) {
         }
       );
       
-      if (response.status === 200) {UTRDislikes
+      if (response.status === 200) {
+        setUserDislikes(response.data);
       } else {
         console.error("Failed to get likes");
       }
@@ -54,21 +55,18 @@ function UTRDislikes({ spotify }) {
     }
   };
 
-  console.log(userLikes);
+  console.log(userDislikes);
 
   return (
     <>
       <div className="flex flex-col items-center ml-1 ">
         <div className="flex flex-col items-center p-2 m-2 min-w-full">
-          <h1 className="text-slate-100 pb-2">Here are the songs you've liked:</h1>
-          <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
-            <img className="" src="search.svg" width={12} alt="search" />
-          </button>
+          <h1 className="text-slate-100 pb-2">Here are the songs you've disliked:</h1>
         </div>
         <div className="min-h-3/4 min-w-full flex items-center justify-center ">
-          {userLikes && (
+          {userDislikes && (
             <div className="grid grid-cols-4 md:grid-cols-10 gap-x-1 max-h-fit">
-              {userLikes.map((item) => (
+              {userDislikes.map((item) => (
                 <SongTrack
                   imgUrl={item.track_cover}
                   key={item.track_id}
@@ -88,4 +86,4 @@ function UTRDislikes({ spotify }) {
   );
 }
 
-export default UTRDisikes;
+export default UTRDislikes;
