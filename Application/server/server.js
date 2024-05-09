@@ -126,7 +126,7 @@ app.post('/api/addlike', (req, res) => {
       const sanityCheck = db.all('SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?', user, id);
       console.log(existingEntry);
       // If the user doesn't exist, insert a new entry
-      if (!existingEntry) {
+      if (existingEntry) {
         console.log('Inserting user:', user, id);
         db.run('INSERT INTO UserLikes (spotify_id, track_id) VALUES (?, ?)', 
           [user, id], (err) => {
@@ -171,52 +171,7 @@ app.post('/api/adddislike', (req, res) => {
       // Check if the user already exists
       const existingEntry = rows.length > 0;
       // If the user doesn't exist, insert a new entry
-      if (!existingEntry) {
-        console.log('Inserting user:', user, id);
-        db.run('INSERT INTO UserDislikes (spotify_id, track_id) VALUES (?, ?)', 
-          [user, id], (err) => {
-            if (err) {
-              console.error('Error inserting song:', err);
-              res.sendStatus(500); // Send error response
-            } else {
-              console.log('Song inserted successfully');
-              res.sendStatus(200); // Send success response
-            }
-            // Close the database connection
-            db.close();
-          });
-      } else {
-        console.log(`Entry with Spotify ID ${user} and track id ${id} already exists`);
-        res.sendStatus(409); // Send conflict response if entry already exists
-        // Close the database connection
-        db.close();
-      }
-    });
-  } catch (error) {
-      console.error('Error:', error);
-      res.sendStatus(500); // Send error response
-  }
-});
-
-// API endpoint to handle SQL script to add user's liked song
-app.post('/api/deleteUser', (req, res) => {
-  console.log("add dislike request");
-  const { id, user } = req.body;
-  console.log(user);
-  let db = new sqlite3.Database(DB_PATH);
-  try {
-    const sql = 'SELECT * FROM UserDislikes WHERE spotify_id = ? AND track_id = ?';
-    db.all(sql, [user, id], (err, rows) => {
-      if (err) {
-        console.error('Error querying database:', err);
-        res.sendStatus(500); // Send error response
-        return;
-      }
-  
-      // Check if the user already exists
-      const existingEntry = rows.length > 0;
-      // If the user doesn't exist, insert a new entry
-      if (!existingEntry) {
+      if (existingEntry) {
         console.log('Inserting user:', user, id);
         db.run('INSERT INTO UserDislikes (spotify_id, track_id) VALUES (?, ?)', 
           [user, id], (err) => {
@@ -246,7 +201,7 @@ app.post('/api/deleteUser', (req, res) => {
 // API endpoint to handle SQL script to add all recommended songs
 app.post('/api/addsong', (req, res) => {
   console.log("add user request");
-  const { track_id, track_name, track_cover, track_preview } = req.body;
+  const { track_id, track_name, track_cover, track_preview, track_artist, track_uri } = req.body;
 
   // Open the database
   let db = new sqlite3.Database(DB_PATH);
@@ -265,11 +220,11 @@ app.post('/api/addsong', (req, res) => {
     // Check if the user already exists
     const existingEntry = rows.length > 0;
 
-    // If the user doesn't exist, insert a new entry
+    // If the song doesn't exist, insert a new entry
     if (!existingEntry) {
       console.log('Inserting song:', track_id, track_name);
-      db.run('INSERT INTO Song (track_id, track_name, track_cover, track_preview) VALUES (?, ?, ?, ?)', 
-          [track_id, track_name, track_cover, track_preview], (err) => {
+      db.run('INSERT INTO Song (track_id, track_name, track_cover, track_preview, track_artist, track_uri) VALUES (?, ?, ?, ?, ?, ?)', 
+          [track_id, track_name, track_cover, track_preview, track_artist, track_uri], (err) => {
           if (err) {
             console.error('Error inserting song:', err);
             res.sendStatus(500); // Send error response
