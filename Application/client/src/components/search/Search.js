@@ -112,20 +112,20 @@ function Search({ spotify }) {
             <input className="w-5/12" id="slider" type="range" onChange={(val) => setSliderVal(val.target.value)}/>
           </div>
           <form className="h-9 pt-2" onSubmit={searchSubmitHandler}>
-            <button className="bg-slate-100 text-slate-900 h-full p-2 rounded-3xl px-3 ">
+            <button className="transition ease-in-out delay-100 bg-slate-100 text-slate-900 h-full p-2 rounded-3xl px-3 hover:scale-110">
               <img className="" src="search.svg" width={12} alt="search" />
             </button>
           </form>
           <div className="flex flex-row space-x-20 pt-6">
-            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600" 
+            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600 transition ease-in-out delay-80 hover:scale-110" 
               onClick={(e) => setAge({ age:"short_term" })}>
               Short Term
             </button>
-            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600" 
+            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600 transition ease-in-out delay-80 hover:scale-110" 
               onClick={(e) => setAge({ age:"medium_term" })}>
                 Medium Term
             </button>
-            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600" 
+            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600 transition ease-in-out delay-80 hover:scale-110" 
               onClick={(e) => setAge({ age:"long_term" })}>
                 Long Term
             </button>
