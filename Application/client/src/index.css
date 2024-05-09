@@ -32,22 +32,7 @@
 }
 
 .text {
-  animation: textcolorchange 10s linear 1s infinite;
-  -webkit-animation: textcolorchange 10s linear 0s infinite alternate;
   padding: 0.25rem 1rem;
 }
 
-@keyframes textcolorchange {
-  0% {
-    color: rgb(82, 211, 183);
-  }
-  33% {
-    color: rgb(66, 92, 209);
-  }
-  66% {
-    color: rgb(186, 89, 195);
-  }
-  100% {
-    color: #f08585;
-  }
-}
+

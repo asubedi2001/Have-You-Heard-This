@@ -6,6 +6,7 @@ import axios from "axios";
 function Search({ spotify }) {
   const history = useHistory();
   const [result, setResult] = useState();
+  const [age, setAge] = useState('medium_term');
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState();
   const [sliderVal, setSliderVal] = useState(50);
