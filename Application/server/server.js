@@ -198,6 +198,28 @@ app.post('/api/adddislike', (req, res) => {
   }
 });
 
+// API endpoint to handle SQL script to get ALL of user's liked songs.
+app.get('/api/getlikes', (req, res) => {
+  console.log("add like request");
+  const { spotify_id } = req.query.spotify_id;
+  console.log(user);
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+  try {
+    const sql = 'SELECT * FROM UserLikes WHERE spotify_id = ?';
+    db.all(sql, [spotify_id], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        res.sendStatus(500); // Send error response
+        return;
+      }
+      res.json(rows);
+    });
+  } catch (error) {
+      console.error('Error:', error);
+      res.sendStatus(500); // Send error response
+  }
+});
+
 // API endpoint to handle SQL script to add user's liked song
 app.post('/api/getlike', (req, res) => {
   console.log("add like request");
@@ -215,7 +237,6 @@ app.post('/api/getlike', (req, res) => {
   
       // Check if the user already exists
       const existingEntry = rows.length > 0;
-      const sanityCheck = db.all('SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?', user, id);
       console.log(existingEntry);
       // If the user doesn't exist, insert a new entry
       if (!existingEntry) {
@@ -357,9 +378,6 @@ app.post('/api/addsong', (req, res) => {
   });
 });
 
-
-
-
 // API endpoint to delete user if they press the delete user on userinfo page
 app.post('/api/deleteuser', (req, res) => {
   console.log("delete user request");
@@ -409,5 +427,7 @@ app.post('/api/deleteuser', (req, res) => {
   // Close the database connection
   db.close();
 });
+
+
 
 app.listen(3001);

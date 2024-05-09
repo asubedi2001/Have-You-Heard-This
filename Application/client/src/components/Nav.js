@@ -72,6 +72,18 @@ function Nav({ spotify }) {
         <div className="flex items-center w-17 text-xs space-x-8 sm:text-sm justify-between">
         <span>
           <AnimatedCard>
+            <a href="/UTRlikes">
+              <img
+                src="likes.svg"
+                className="cursor-pointer"
+                width={35}
+                alt="Likes"
+              />
+            </a>
+          </AnimatedCard>
+        </span>
+        <span>
+          <AnimatedCard>
             <Link to="/likepage">
               <img
                 src="spotifyHeart.png"
