@@ -16,10 +16,8 @@ function Likes({ spotify }) {
     warn: "",
     success: "",
   });
-
-  const showLikes = (e) => {
-
-    e.preventDefault();
+  useEffect(() => {
+    // e.preventDefault();
     if (!spotify) {
       console.log("empty access token");
       return;
@@ -36,18 +34,13 @@ function Likes({ spotify }) {
           console.error(err);
         }
     );
-  };
+  });
 
   return (
     <>
       <div className="flex flex-col items-center ml-1 ">
         <div className="flex flex-col items-center p-2 m-2 min-w-full">
-          <h1 className="text-slate-100 pb-2">Here are the songs you've liked:</h1>
-          <form className="h-9" onSubmit={showLikes}>
-            <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
-              <img className="" src="search.svg" width={12} alt="search" />
-            </button>
-	        </form>
+          <h1 className="text-slate-100 pb-2">Here are the songs you've liked recently:</h1>
 	      </div>
         <div className="  min-h-3/4 min-w-full flex items-center justify-center ">
           {isLoading ? ("") : (

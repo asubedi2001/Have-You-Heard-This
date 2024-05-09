@@ -2,34 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.logo {
-  animation: colorchange 10s linear 1s infinite;
-  -webkit-animation: colorchange 10s linear 0s infinite alternate;
-  padding: 0.25rem 1rem;
-}
-
-@keyframes colorchange {
-  0% {
-    background: #cffff1;
-    color: rgb(82, 211, 183);
-  }
-  33% {
-    background: #ffd9df;
-    color: rgb(186, 89, 195);
-  }
-  66% {
-    background: #f5f69a;
-    color: rgb(251, 176, 35);
-  }
-  70% {
-    background: #ffd9df;
-    color: rgb(192, 71, 71);
-  }
-  100% {
-    background: #cffff1;
-    color: rgb(82, 211, 183);
-  }
-}
 
 .text {
   padding: 0.25rem 1rem;

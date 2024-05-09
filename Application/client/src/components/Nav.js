@@ -55,7 +55,7 @@ function Nav({ spotify }) {
 
   return (
     <>
-      <div className="text flex items-center justify-between bg-blue-950">
+      <div className="text flex items-center justify-between bg-blue-900">
         <Link to="/">
           <div className="flex items-center">
             <div className="p-2">
