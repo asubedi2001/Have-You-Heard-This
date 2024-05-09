@@ -3,8 +3,12 @@
 
 In order to run the react portion:
 
-    download the UI folder
+    git clone the repository
 
-    cd into it and run npm install
+    run npm install inside of ./Application/client and also ./Application/server
 
-    npm start and the website will be running on localhost:3000
+    run "node server.js" inside of ./Application/server
+
+    run "npm run start" inside of ./Application/client
+
+    Project will be hosted at localhost:3000, server listening on port 3001.
