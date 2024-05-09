@@ -212,7 +212,7 @@ function SongTrack({
             whileTap={{ scale: "0.8" }}
             className="flex bottom-0 right-0 w-4 sm:w-8 p-1 cursor-pointer"
             src="like.svg"
-            onClick={() => likeSongHandler()}
+            onClick={() => likeSongHandler(id)}
             alt=""
           />
         </div>
