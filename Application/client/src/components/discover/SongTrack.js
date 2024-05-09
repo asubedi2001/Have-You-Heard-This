@@ -185,12 +185,13 @@ function SongTrack({
       <div
         className="relative  hover:border-2 hover:border-sky-500"
         onMouseOver={play}
-        onMouseOut={pause}
+        onMouseOut={pause} 
       >
-        <motion.img src={imgUrl} alt="" />
+        <img src={imgUrl} alt="" />
         <div className="flex justify-between">
           <div className="flex">
-            <img id={id}
+            <motion.img id={id}
+              whileHover={{ scale: "1.125" }}
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="aakash_dislike.png"
@@ -201,7 +202,7 @@ function SongTrack({
               whileHover={{ scale: "1.125" }}
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
-              src="aakash_unliked.png"
+              src="like.png"
               onClick={() => addLikeHandler(imgUrl, id, song)}
               alt=""
             />
