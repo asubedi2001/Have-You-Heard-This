@@ -19,6 +19,7 @@ function SongTrack({
   //states
 
   const [audio, setAudio] = useState();
+  const [item, itemState] = useState();
 
   const likeSongHandler = (id) => {
     console.log(id);
@@ -33,7 +34,7 @@ function SongTrack({
       }
     );
   };
-  const addLikeHandler = (id) => {   
+  const addLikeHandler = (imgUrl, id, song) => {   
       
       if (!spotify) {
         console.log("empty access token");
@@ -59,6 +60,7 @@ function SongTrack({
 
             if (response.status === 200) {
               console.log('Like added successfully');
+              document.getElementById(song).src = "aakash_liked.png";
             } else {
               console.error('Failed to add like');
             }
@@ -73,7 +75,8 @@ function SongTrack({
     
   };
 
-  const addDislikeHandler = (id) => {   
+  const addDislikeHandler = (imgUrl, id, song) => {   
+    console.log(id);
       
     if (!spotify) {
       console.log("empty access token");
@@ -98,6 +101,7 @@ function SongTrack({
 
           if (response.status === 200) {
             console.log('Like added successfully');
+            document.getElementById(id).src = "aakash_disliked.png";
           } else {
             console.error('Failed to add like');
           }
@@ -109,7 +113,6 @@ function SongTrack({
         console.error(err);
       }
     );
-  
 };
 
   //song handlers
@@ -128,8 +131,53 @@ function SongTrack({
       return;
     }
   };
-  useEffect(() => {
+  useEffect(async () => {
     setAudio(new Audio(audioUrl));
+    spotify.getMe().then(
+      async (data) => {
+        var user = data.body.uri;
+        try {
+          const response = await axios.post('http://localhost:3001/api/getdislike', JSON.stringify({
+            user,
+            id,
+          }), {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          if (response.status === 200) {
+            document.getElementById(id).src = "aakash_disliked.png";
+          } else {
+            document.getElementById(id).src = "aakash_dislike.png";
+            console.error('Failed to add like');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+
+        try {
+          const response = await axios.post('http://localhost:3001/api/getlike', JSON.stringify({
+            user,
+            id,
+          }), {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.status === 200) {
+            document.getElementById(song).src = "aakash_liked.png";
+          } else {
+            document.getElementById(song).src = "aakash_unliked.png";
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }, [audioUrl]);
 
   return (
@@ -139,22 +187,22 @@ function SongTrack({
         onMouseOver={play}
         onMouseOut={pause}
       >
-        <img src={imgUrl} alt="" />
+        <motion.img src={imgUrl} alt="" />
         <div className="flex justify-between">
           <div className="flex">
-            <img
+            <img id={id}
               whileTap={{ scale: "0.8" }}
-              className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer rotate-180"
-              src="aakash_unliked.png"
+              className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
+              src="aakash_dislike.png"
               onClick={() => addDislikeHandler(imgUrl, id)}
               alt=""
             />
-            <motion.img
+            <motion.img id={song}
               whileHover={{ scale: "1.125" }}
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="aakash_unliked.png"
-              onClick={() => addLikeHandler(id)}
+              onClick={() => addLikeHandler(imgUrl, id, song)}
               alt=""
             />
           </div>

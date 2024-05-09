@@ -199,6 +199,74 @@ app.post('/api/adddislike', (req, res) => {
 });
 
 // API endpoint to handle SQL script to add user's liked song
+app.post('/api/getlike', (req, res) => {
+  console.log("add like request");
+  const { id, user } = req.body;
+  console.log(user);
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+  try {
+    const sql = 'SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?';
+    db.all(sql, [user, id], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        res.sendStatus(500); // Send error response
+        return;
+      }
+  
+      // Check if the user already exists
+      const existingEntry = rows.length > 0;
+      const sanityCheck = db.all('SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?', user, id);
+      console.log(existingEntry);
+      // If the user doesn't exist, insert a new entry
+      if (!existingEntry) {
+        res.sendStatus(201);
+        db.close();
+      } else {
+        res.sendStatus(200); // Send conflict response if entry already exists
+        // Close the database connection
+        db.close();
+      }
+    });
+  } catch (error) {
+      console.error('Error:', error);
+      res.sendStatus(500); // Send error response
+  }
+});
+
+// API endpoint to handle SQL script to add user's liked song
+app.post('/api/getdislike', (req, res) => {
+  console.log("add dislike request");
+  const { id, user } = req.body;
+  console.log(user);
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+  try {
+    const sql = 'SELECT * FROM UserDislikes WHERE spotify_id = ? AND track_id = ?';
+    db.all(sql, [user, id], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        res.sendStatus(500); // Send error response
+        return;
+      }
+  
+      // Check if the user already exists
+      const existingEntry = rows.length > 0;
+      // If the user doesn't exist, insert a new entry
+      if (!existingEntry) {
+        res.sendStatus(201);
+        db.close();
+      } else {
+        res.sendStatus(200); // Send conflict response if entry already exists
+        // Close the database connection
+        db.close();
+      }
+    });
+  } catch (error) {
+      console.error('Error:', error);
+      res.sendStatus(500); // Send error response
+  }
+});
+
+// API endpoint to handle SQL script to add user's liked song
 app.post('/api/deleteUser', (req, res) => {
   console.log("add dislike request");
   const { id, user } = req.body;
