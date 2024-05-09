@@ -79,7 +79,7 @@ function SongTrack({
       console.log("empty access token");
       return;
     }
-    var user2 = spotify.getMe();
+
     spotify.getMe().then(
       async (data) => {
         var user = data.body.uri;
@@ -146,7 +146,7 @@ function SongTrack({
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer rotate-180"
               src="aakash_unliked.png"
-              onClick={() => addLikeHandler(id)}
+              onClick={() => addDislikeHandler(id)}
               alt=""
             />
             <motion.img
@@ -154,7 +154,7 @@ function SongTrack({
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="aakash_unliked.png"
-              onClick={() => addDislikeHandler(id)}
+              onClick={() => addLikeHandler(id)}
               alt=""
             />
           </div>
