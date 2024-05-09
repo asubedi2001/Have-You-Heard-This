@@ -18,7 +18,7 @@ function UTRLikes({ spotify }) {
         const data = await spotify.getMe();
         console.log(data.body);
         setSpotifyID(data.body.uri);
-        setUserLikes(getUserLikes(data.body.uri));
+        getUserLikes(spotify_id);
       } catch (err) {
         console.error(err);
       }

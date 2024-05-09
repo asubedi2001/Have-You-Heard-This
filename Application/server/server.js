@@ -205,7 +205,11 @@ app.get('/api/getlikes', (req, res) => {
   console.log(user);
   let db = new sqlite3.Database('./database/utr.sqlite3');
   try {
-    const sql = 'SELECT * FROM UserLikes WHERE spotify_id = ?';
+    const sql = 'SELECT * \
+    FROM UserLikes \
+    JOIN UserLikes \
+    ON track_id \
+    WHERE spotify_id = ?';
     db.all(sql, [spotify_id], (err, rows) => {
       if (err) {
         console.error('Error querying database:', err);
