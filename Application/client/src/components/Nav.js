@@ -69,7 +69,7 @@ function Nav({ spotify }) {
           </div>
         </Link>
 
-        <div className="flex items-center w-17 text-xs space-x-2 sm:text-sm justify-between">
+        <div className="flex items-center w-17 text-xs space-x-8 sm:text-sm justify-between">
         <span>
           <AnimatedCard>
             <Link to="/likepage">
