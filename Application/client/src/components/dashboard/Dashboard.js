@@ -5,6 +5,7 @@ import Nav from "../Nav.js";
 import Search from "../search/Search.js";
 import Likes from "../likes/Likes.js";
 import Userpage from "../userpage/Userpage.js";
+import UTRLikes from "../UTRLikes/UTRLikes.js";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function Dashboard({ code }) {
@@ -18,6 +19,9 @@ function Dashboard({ code }) {
       <BrowserRouter>
         <Nav spotify={spotify}/>
         <Switch>
+          <Route path="/UTRlikes">
+            <UTRLikes spotify={spotify} />
+          </Route>
           <Route path="/userinfo">
             <Userpage spotify={spotify} />
           </Route>
