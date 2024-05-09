@@ -111,30 +111,43 @@ app.post('/api/addlike', (req, res) => {
   console.log("add like request");
   const { id, user } = req.body;
   console.log(user);
+  let db = new sqlite3.Database('./database/utr.sqlite3');
   try {
-    console.log("H");
-      let db = new sqlite3.Database('./database/utr.sqlite3');
-      // check if entry with the same data exists
-      const existingEntry = db.all('SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?', user, id);
-      const datetimeRes = db.get('SELECT datetime("now", "localtime") AS current_datetime');
-      const datetime = datetimeRes.current_datetime;
-      console.log(existingEntry);
-      
-      // if entry does not exist, create an entry with this data
-      if (!existingEntry) {
-        db.run('INSERT INTO UserLikes (spotify_id, track_id) VALUES (?, ?)', user, id);
-        console.log("Hel");
-
-          res.sendStatus(200); // Send success response
-      } else {
-        console.log("Hell");
-
-          console.log(`Entry with User ID ${user} and Track ID ${id} already exists`);
-          res.sendStatus(409); // Send conflict response if entry already exists
+    const sql = 'SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?';
+    db.all(sql, [user, id], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        res.sendStatus(500); // Send error response
+        return;
       }
-      console.log("Hello!");
+  
+      // Check if the user already exists
+      const existingEntry = rows.length > 0;
+      const sanityCheck = db.all('SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?', user, id);
+      console.log(existingEntry);
+      // If the user doesn't exist, insert a new entry
+      if (!existingEntry) {
+        console.log('Inserting user:', user, id);
+        db.run('INSERT INTO UserLikes (spotify_id, track_id) VALUES (?, ?)', 
+          [user, id], (err) => {
+            if (err) {
+              console.error('Error inserting song:', err);
+              res.sendStatus(500); // Send error response
+            } else {
+              console.log('Song inserted successfully');
+              res.sendStatus(200); // Send success response
+            }
+            // Close the database connection
+            db.close();
+          });
+      } else {
+        console.log(`Entry with Spotify ID ${user} and track id ${id} already exists`);
+        res.sendStatus(409); // Send conflict response if entry already exists
+        // Close the database connection
+        db.close();
+      }
+    });
   } catch (error) {
-      console.log("Fuck");
       console.error('Error:', error);
       res.sendStatus(500); // Send error response
   }

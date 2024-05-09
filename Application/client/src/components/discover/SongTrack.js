@@ -33,20 +33,17 @@ function SongTrack({
       }
     );
   };
-  const addDislikeHandler = (id) => {
-    console.log("FUCK!");
-   
+  const addLikeHandler = (id) => {   
       
       if (!spotify) {
         console.log("empty access token");
         return;
       }
       var user2 = spotify.getMe();
-      console.log("Ugh");
       spotify.getMe().then(
         async (data) => {
           console.log("Hi");
-          var user = data.body.id;
+          var user = data.body.uri;
           console.log(user);
           console.log(data.body);
           console.log('User attempting to add liked song.');
@@ -75,6 +72,46 @@ function SongTrack({
       );
     
   };
+
+  const addDislikeHandler = (id) => {   
+      
+    if (!spotify) {
+      console.log("empty access token");
+      return;
+    }
+    var user2 = spotify.getMe();
+    spotify.getMe().then(
+      async (data) => {
+        var user = data.body.uri;
+        console.log(user);
+        console.log(data.body);
+        console.log('User attempting to add disliked song.');
+        try {
+          const response = await axios.post('http://localhost:3001/api/adddislike', JSON.stringify({
+            user,
+            id,
+          }), {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.status === 200) {
+            console.log('Like added successfully');
+          } else {
+            console.error('Failed to add like');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  
+};
+
   //song handlers
   const pause = () => {
     audio.pause();
@@ -109,7 +146,7 @@ function SongTrack({
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer rotate-180"
               src="aakash_unliked.png"
-              onClick={() => addDislikeHandler(id)}
+              onClick={() => addLikeHandler(id)}
               alt=""
             />
             <motion.img
