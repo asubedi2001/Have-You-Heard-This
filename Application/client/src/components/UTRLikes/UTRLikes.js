@@ -15,12 +15,17 @@ function UTRLikes({ spotify }) {
         return;
       }
       try {
-        const data = await spotify.getMe();
-        console.log(data.body);
-        setSpotifyID(data.body.uri);
+        spotify.getMe().then(
+            async (data) => {
+              setSpotifyID(data.body.uri);
+              console.log("in data scope" + data.body.uri);
+            });
+        console.log(spotify_id);
+        console.log('gaming');
         getUserLikes(spotify_id);
       } catch (err) {
         console.error(err);
+        console.log("bad thing happen");
       }
     };
 
@@ -29,8 +34,11 @@ function UTRLikes({ spotify }) {
 
   // Function to get all user UTR likes.
   const getUserLikes = async (spotify_id) => {
+    console.log("START GUL SPOTIFYID");
+    console.log(spotify_id);
+    console.log("END GUL SPOTIFYID");
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         "http://localhost:3001/api/getlikes",
         JSON.stringify({
           spotify_id
@@ -52,6 +60,8 @@ function UTRLikes({ spotify }) {
       console.error("Error:", error);
     }
   };
+
+  console.log(userLikes);
 
   return (
     <>

@@ -200,8 +200,8 @@ app.post('/api/adddislike', (req, res) => {
 
 // API endpoint to handle SQL script to get ALL of user's liked songs.
 app.get('/api/getlikes', (req, res) => {
-  console.log("add like request");
-  const { spotify_id } = req.query.spotify_id;
+  console.log("get likes request");
+  const { spotify_id } = req.query;
   console.log(user);
   let db = new sqlite3.Database('./database/utr.sqlite3');
   try {
