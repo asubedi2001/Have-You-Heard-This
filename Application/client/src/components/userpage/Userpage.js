@@ -1,11 +1,47 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
 
 function Userpage({ spotify }) {
   const [userProfile, setUserProfile] = useState(null);
-  const deleteUserHandler = (id) => {
-    //do something
-  }
+
+  const deleteUserHandler = (imgUrl, id, song) => {   
+      
+    if (!spotify) {
+      console.log("empty access token");
+      return;
+    }
+    spotify.getMe().then(
+      async (data) => {
+        var spotify_id = data.body.uri;
+        console.log(spotify_id);
+        console.log(data.body);
+        console.log('User attempting to delete data.');
+        try {
+          const response = await axios.post('http://localhost:3001/api/deleteuser', JSON.stringify({
+            spotify_id,
+          }), {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.status === 200) {
+            console.log('Data deleted successfully');
+            
+          } else {
+            console.error('Failed to delete data');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  };
+
   useEffect(() => {
     const fetchUserProfile = () => {
       if (!spotify) {

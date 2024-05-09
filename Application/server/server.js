@@ -266,51 +266,6 @@ app.post('/api/getdislike', (req, res) => {
   }
 });
 
-// API endpoint to handle SQL script to add user's liked song
-app.post('/api/deleteUser', (req, res) => {
-  console.log("add dislike request");
-  const { id, user } = req.body;
-  console.log(user);
-  let db = new sqlite3.Database('./database/utr.sqlite3');
-  try {
-    const sql = 'SELECT * FROM UserDislikes WHERE spotify_id = ? AND track_id = ?';
-    db.all(sql, [user, id], (err, rows) => {
-      if (err) {
-        console.error('Error querying database:', err);
-        res.sendStatus(500); // Send error response
-        return;
-      }
-  
-      // Check if the user already exists
-      const existingEntry = rows.length > 0;
-      // If the user doesn't exist, insert a new entry
-      if (!existingEntry) {
-        console.log('Inserting user:', user, id);
-        db.run('INSERT INTO UserDislikes (spotify_id, track_id) VALUES (?, ?)', 
-          [user, id], (err) => {
-            if (err) {
-              console.error('Error inserting song:', err);
-              res.sendStatus(500); // Send error response
-            } else {
-              console.log('Song inserted successfully');
-              res.sendStatus(200); // Send success response
-            }
-            // Close the database connection
-            db.close();
-          });
-      } else {
-        console.log(`Entry with Spotify ID ${user} and track id ${id} already exists`);
-        res.sendStatus(409); // Send conflict response if entry already exists
-        // Close the database connection
-        db.close();
-      }
-    });
-  } catch (error) {
-      console.error('Error:', error);
-      res.sendStatus(500); // Send error response
-  }
-});
-
 // API endpoint to handle SQL script to add all recommended songs
 app.post('/api/addsong', (req, res) => {
   console.log("add user request");
@@ -357,16 +312,13 @@ app.post('/api/addsong', (req, res) => {
   });
 });
 
-
-
-
 // API endpoint to delete user if they press the delete user on userinfo page
 app.post('/api/deleteuser', (req, res) => {
   console.log("delete user request");
   const { spotify_id } = req.body;
-
+  console.log(spotify_id);
   // Open the database
-  let db = new sqlite3.Database(DB_PATH);
+  let db = new sqlite3.Database('./database/utr.sqlite3');
 
   // SQL queries to delete user data
   const deleteUserQuery = 'DELETE FROM User WHERE spotify_id = ?';
