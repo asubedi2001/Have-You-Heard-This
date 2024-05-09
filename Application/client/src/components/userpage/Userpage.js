@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 function Userpage({ spotify }) {
   const [userProfile, setUserProfile] = useState(null);
-
+  const deleteUserHandler = (id) => {
+    //do something
+  }
   useEffect(() => {
     const fetchUserProfile = () => {
       if (!spotify) {
@@ -34,7 +37,7 @@ function Userpage({ spotify }) {
         {/* User Information */}
         <div className="flex justify-center items-center p-4 drop-shadow-2xl">
             {userProfile && (
-                <div className="p-4 bg-gray-800 rounded-lg drop-shadow-2xl">
+                <div className="p-4 bg-gray-800 flex flex-col rounded-lg drop-shadow-2xl">
                     <div className="mt-1">
                         <h1 className="font-bold text-slate-100">Display Name:</h1>
                         <p className="text-cyan-100 ml-2">{userProfile.display_name}</p>
@@ -48,6 +51,14 @@ function Userpage({ spotify }) {
                         <a href={userProfile.external_urls.spotify} className="text-sky-400 ml-2">{userProfile.external_urls.spotify}</a>
                         {/* Add other user details here */}
                     </div>
+                <motion.img 
+                  whileHover={{ scale: "1.175"}}
+                  whileTap={{ scale: "0.8" }}
+                  className="cursor-pointer w-12 self-center"
+                  src="delete.png"
+                  onClick={deleteUserHandler}
+                  alt=""
+                />
                 </div>
             )}
         </div>
