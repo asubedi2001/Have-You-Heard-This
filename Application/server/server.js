@@ -7,7 +7,7 @@ const sqlite3 = require('sqlite3')
 const { open } = require('sqlite');
 const app = express();
 
-const DB_PATH = ''
+const DB_PATH = './database/utr.sqlite3'
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -66,7 +66,7 @@ app.post('/api/adduser', (req, res) => {
   const { spotify_id, display_name, email, pfp } = req.body;
 
   // Open the database
-  let db = new sqlite3.Database('./database/utr.sqlite3');
+  let db = new sqlite3.Database(DB_PATH);
 
   // SQL query to check if the user exists
   const sql = 'SELECT * FROM User WHERE spotify_id = ?';
@@ -111,7 +111,7 @@ app.post('/api/addlike', (req, res) => {
   console.log("add like request");
   const { id, user } = req.body;
   console.log(user);
-  let db = new sqlite3.Database('./database/utr.sqlite3');
+  let db = new sqlite3.Database(DB_PATH);
   try {
     const sql = 'SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?';
     db.all(sql, [user, id], (err, rows) => {
@@ -158,7 +158,7 @@ app.post('/api/adddislike', (req, res) => {
   console.log("add dislike request");
   const { id, user } = req.body;
   console.log(user);
-  let db = new sqlite3.Database('./database/utr.sqlite3');
+  let db = new sqlite3.Database(DB_PATH);
   try {
     const sql = 'SELECT * FROM UserDislikes WHERE spotify_id = ? AND track_id = ?';
     db.all(sql, [user, id], (err, rows) => {
@@ -203,7 +203,7 @@ app.post('/api/deleteUser', (req, res) => {
   console.log("add dislike request");
   const { id, user } = req.body;
   console.log(user);
-  let db = new sqlite3.Database('./database/utr.sqlite3');
+  let db = new sqlite3.Database(DB_PATH);
   try {
     const sql = 'SELECT * FROM UserDislikes WHERE spotify_id = ? AND track_id = ?';
     db.all(sql, [user, id], (err, rows) => {
@@ -249,7 +249,7 @@ app.post('/api/addsong', (req, res) => {
   const { track_id, track_name, track_cover, track_preview } = req.body;
 
   // Open the database
-  let db = new sqlite3.Database('./database/utr.sqlite3');
+  let db = new sqlite3.Database(DB_PATH);
 
   // SQL query to check if the user exists
   const sql = 'SELECT * FROM Song WHERE track_id = ?';
@@ -289,6 +289,148 @@ app.post('/api/addsong', (req, res) => {
   });
 });
 
+// API endpoint to handle SQL script to give UTR Dislike Page all user dislikes
+app.post('/api/getdislikes', (req, res) => {
+  console.log("get user dislikes request");
+  const { spotify_id } = req.body;
+  // Open the database
+  let db = new sqlite3.Database(DB_PATH);
 
+  // SQL query to check if the user exists
+  const userQuery = 'SELECT * FROM User WHERE spotify_id = ?';
+
+  // Execute the user query
+  db.all(userQuery, [spotify_id], (err, userRows) => {
+    if (err) {
+      console.error('Error querying database:', err);
+      res.sendStatus(500); // Send error response
+      return;
+    }
+    // Check if the user already exists
+    const userExists = userRows.length > 0;
+
+    if (userExists) {
+      // SQL query to retrieve all dislike track data associated with the spotify_id
+      const dislikesQuery = `
+        SELECT Song.track_id, Song.track_name, Song.track_cover 
+        FROM UserDislikes 
+        INNER JOIN Song ON UserDislikes.track_id = Song.track_id 
+        WHERE UserDislikes.spotify_id = ?
+      `;
+      // Execute the dislikes query
+      db.all(dislikesQuery, [spotify_id], (err, dislikesRows) => {
+        if (err) {
+          console.error('Error querying database:', err);
+          res.sendStatus(500); // Send error response
+          return;
+        }
+        // Send back the dislike track data
+        res.status(200).json({ dislikes: dislikesRows });
+      });
+    } else {
+      console.log(`Entry with Spotify ID ${spotify_id} doesn't exist`);
+      res.sendStatus(404); // Send not found response if user doesn't exist
+    }
+    // Close the database connection
+    db.close();
+  });
+});
+
+// API endpoint to handle SQL script to UTR Likepage all user likes
+app.post('/api/getlikes', (req, res) => {
+  console.log("get user likes request");
+  const { spotify_id } = req.body;
+  // Open the database
+  let db = new sqlite3.Database(DB_PATH);
+
+  // SQL query to check if the user exists
+  const userQuery = 'SELECT * FROM User WHERE spotify_id = ?';
+
+  // Execute the user query
+  db.all(userQuery, [spotify_id], (err, userRows) => {
+    if (err) {
+      console.error('Error querying database:', err);
+      res.sendStatus(500); // Send error response
+      return;
+    }
+    // Check if the user already exists
+    const userExists = userRows.length > 0;
+
+    if (userExists) {
+      // SQL query to retrieve all track data associated with the spotify_id
+      const likesQuery = `
+        SELECT Song.track_id, Song.track_name, Song.track_cover 
+        FROM UserLikes 
+        INNER JOIN Song ON UserLikes.track_id = Song.track_id 
+        WHERE UserLikes.spotify_id = ?
+      `;
+      // Execute the likes query
+      db.all(likesQuery, [spotify_id], (err, likesRows) => {
+        if (err) {
+          console.error('Error querying database:', err);
+          res.sendStatus(500); // Send error response
+          return;
+        }
+        // Send back the track data
+        res.status(200).json({ tracks: likesRows });
+      });
+    } else {
+      console.log(`Entry with Spotify ID ${spotify_id} doesn't exist`);
+      res.sendStatus(404); // Send not found response if user doesn't exist
+    }
+    // Close the database connection
+    db.close();
+  });
+});
+
+// API endpoint to delete user if they press the delete user on userinfo page
+app.post('/api/deleteuser', (req, res) => {
+  console.log("delete user request");
+  const { spotify_id } = req.body;
+
+  // Open the database
+  let db = new sqlite3.Database(DB_PATH);
+
+  // SQL queries to delete user data
+  const deleteUserQuery = 'DELETE FROM User WHERE spotify_id = ?';
+  const deleteLikesQuery = 'DELETE FROM UserLikes WHERE spotify_id = ?';
+  const deleteDislikesQuery = 'DELETE FROM UserDislikes WHERE spotify_id = ?';
+
+  // Execute the delete queries
+  db.run(deleteUserQuery, [spotify_id], function(err) {
+    if (err) {
+      console.error('Error deleting user data:', err);
+      res.sendStatus(500); // Send error response
+      return;
+    }
+    console.log(`Deleted user data for spotify_id: ${spotify_id}`);
+
+    // Execute the likes deletion query
+    db.run(deleteLikesQuery, [spotify_id], function(err) {
+      if (err) {
+        console.error('Error deleting user likes data:', err);
+        res.sendStatus(500); // Send error response
+        return;
+      }
+      console.log(`Deleted user likes data for spotify_id: ${spotify_id}`);
+
+      // Execute the dislikes deletion query
+      db.run(deleteDislikesQuery, [spotify_id], function(err) {
+        if (err) {
+          console.error('Error deleting user dislikes data:', err);
+          res.sendStatus(500); // Send error response
+          return;
+        }
+        console.log(`Deleted user dislikes data for spotify_id: ${spotify_id}`);
+
+        // Send success response
+        res.sendStatus(200);
+      });
+    });
+  });
+
+  // Close the database connection
+  db.close();
+});
 
 app.listen(3001);
