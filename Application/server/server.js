@@ -201,21 +201,28 @@ app.post('/api/adddislike', (req, res) => {
 // API endpoint to handle SQL script to get ALL of user's liked songs.
 app.get('/api/getlikes', (req, res) => {
   console.log("get likes request");
-  const { spotify_id } = req.query;
-  console.log(user);
+  console.log(req.query);
+  const spotify_id = req.query.spotify_id;
+  console.log(spotify_id);
   let db = new sqlite3.Database('./database/utr.sqlite3');
   try {
+    const sanityCheck = db.all('SELECT * FROM UserLikes JOIN Song ON UserLikes.track_id=Song.track_id WHERE spotify_id = ?', spotify_id);
+      console.log(sanityCheck);
+
+
+
     const sql = 'SELECT * \
     FROM UserLikes \
-    JOIN UserLikes \
-    ON track_id \
-    WHERE spotify_id = ?';
+    JOIN Song \
+    ON UserLikes.track_id=Song.track_id \
+    WHERE UserLikes.spotify_id = ?';
     db.all(sql, [spotify_id], (err, rows) => {
       if (err) {
         console.error('Error querying database:', err);
         res.sendStatus(500); // Send error response
         return;
       }
+      console.log(rows);
       res.json(rows);
     });
   } catch (error) {

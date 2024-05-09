@@ -5,7 +5,6 @@ import axios from "axios";
 
 function UTRLikes({ spotify }) {
   console.log("UTR Likes being created...");
-  const [spotify_id, setSpotifyID] = useState(null);
   const [userLikes, setUserLikes] = useState(null);
   
   useEffect(() => {
@@ -17,12 +16,9 @@ function UTRLikes({ spotify }) {
       try {
         spotify.getMe().then(
             async (data) => {
-              setSpotifyID(data.body.uri);
               console.log("in data scope" + data.body.uri);
+              getUserLikes(data.body.uri);
             });
-        console.log(spotify_id);
-        console.log('gaming');
-        getUserLikes(spotify_id);
       } catch (err) {
         console.error(err);
         console.log("bad thing happen");
@@ -38,11 +34,10 @@ function UTRLikes({ spotify }) {
     console.log(spotify_id);
     console.log("END GUL SPOTIFYID");
     try {
-      const response = await axios.get(
-        "http://localhost:3001/api/getlikes",
-        JSON.stringify({
-          spotify_id
-        }),
+      const response = await axios.get("http://localhost:3001/api/getlikes",
+        {params: {
+            spotify_id: spotify_id,
+        }},
         {
           headers: {
             "Content-Type": "application/json"
@@ -51,6 +46,7 @@ function UTRLikes({ spotify }) {
       );
       
       if (response.status === 200) {
+        console.log(response);
         setUserLikes(response.data);
         console.log("successfully retrieved likes");
       } else {
