@@ -6,6 +6,7 @@ import axios from "axios";
 function Search({ spotify }) {
   const history = useHistory();
   const [result, setResult] = useState();
+  const [age, setAge] = useState('medium_term');
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState();
   const [sliderVal, setSliderVal] = useState(50);
@@ -74,7 +75,7 @@ function Search({ spotify }) {
     }
     let artistIds = [];
     let str = "";
-    spotify.getMyTopArtists().then(
+    spotify.getMyTopArtists({time_range: {age}}).then(
       (data) => {
         for(let i = 0; i < 5; i++){
           const str = data.body.items[i].id
@@ -107,16 +108,31 @@ function Search({ spotify }) {
     <>
       <div className="flex flex-col items-center ml-1 ">
         <div className="flex flex-col items-center p-2 m-2 min-w-full">
-          <h1 className="text-slate-100 pb-2">How popular should it be?</h1>
-          <h1 className="text-slate-100 pb-2">{sliderVal}% Popularity</h1>
-          <div className="flex flex-col items-center">
-            <input className="min-w-96" id="slider" type="range" onChange={(val) => setSliderVal(val.target.value)}/>
+          <h1 className="text-slate-100 text-xl pb-2">How popular should it be?</h1>
+          <h1 className="text-slate-100 text-lg pb-2">{sliderVal}% Popularity</h1>
+          <div className="flex flex-col items-center min-w-full">
+            <input className="w-5/12" id="slider" type="range" onChange={(val) => setSliderVal(val.target.value)}/>
           </div>
-          <form className="h-9" onSubmit={searchSubmitHandler}>
-            <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
+          <form className="h-9 pt-2" onSubmit={searchSubmitHandler}>
+            <button className="transition ease-in-out delay-100 bg-slate-100 text-slate-900 h-full p-2 rounded-3xl px-3 hover:scale-110">
               <img className="" src="search.svg" width={12} alt="search" />
             </button>
           </form>
+          <div className="flex flex-row space-x-20 pt-6">
+            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600 transition ease-in-out delay-80 hover:scale-110" 
+              onClick={(e) => setAge({ age:"short_term" })}>
+              Short Term
+            </button>
+            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600 transition ease-in-out delay-80 hover:scale-110" 
+              onClick={(e) => setAge({ age:"medium_term" })}>
+                Medium Term
+            </button>
+            <button className="text-white px-2 rounded-full border-2 border-full bg-blue-600 border-blue-600 transition ease-in-out delay-80 hover:scale-110" 
+              onClick={(e) => setAge({ age:"long_term" })}>
+                Long Term
+            </button>
+
+          </div>
         </div>
         <div className="  min-h-3/4 min-w-full flex items-center justify-center ">
           {isLoading ? ("") : 

@@ -55,28 +55,28 @@ function Nav({ spotify }) {
 
   return (
     <>
-      <div className="text flex items-center  justify-between bg-blue-950">
+      <div className="text flex items-center justify-between bg-blue-900">
         <Link to="/">
           <div className="flex items-center">
             <div className="p-2">
               <img
                 src="aakash_logo.png"
-                width={40}
+                width={70}
                 alt="logo"
               />
             </div>
-            <h1 className="invisible sm:visible">Have you heard this?</h1>
+            <h1 className="invisible sm:visible text-slate-200 text-2xl">Have you heard this?</h1>
           </div>
         </Link>
 
-        <div className=" flex items-center w-16 text-xs sm:text-sm justify-between">
+        <div className="flex items-center w-17 text-xs space-x-8 sm:text-sm justify-between">
         <span>
           <AnimatedCard>
             <Link to="/likepage">
               <img
                 src="spotifyHeart.png"
                 className="cursor-pointer"
-                width={15}
+                width={45}
                 alt="likes"
               />
             </Link>
@@ -90,7 +90,7 @@ function Nav({ spotify }) {
                   src={userProfile.images[0].url}
                   alt="User Profile"
                   className="rounded-full border border-slate-900"
-                  width={25}
+                  width={45}
                 />
               </Link>
             </AnimatedCard>
@@ -103,21 +103,23 @@ function Nav({ spotify }) {
                   src="gizz.jpg"
                   alt="Default Profile"
                   className="rounded-full border border-slate-900"
-                  width={25}
+                  width={45}
                 />
               </Link>
             </AnimatedCard>
           </span>
           
         )}
-        <a href="/">
-          <img
-            src="logout.svg"
-            className="cursor-pointer"
-            width={15}
-            alt="logout"
-          />
+        <AnimatedCard>
+          <a href="/">
+            <img
+              src="logout.svg"
+              className="cursor-pointer"
+              width={35}
+              alt="logout"
+            />
           </a>
+        </AnimatedCard>
         </div>
       </div>
     </>
