@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import AnimatedCard from "../motionComponents/AnimatedCard";
+import axios from "axios";
+
 function SongTrack({
   imgUrl,
   id,
@@ -31,17 +33,47 @@ function SongTrack({
       }
     );
   };
-  const addDislikeHandler = () => {
-    const value = {
-      uuid: uuidv4(),
-      imgUrl,
-      spotifyId: id,
-      name: song,
-      artist,
-      uri,
-    };
-    setPlaylist([...playlist, value]);
-    setDisplay({ success: "Song added to Playlist Creator!" });
+  const addDislikeHandler = (id) => {
+    console.log("FUCK!");
+   
+      
+      if (!spotify) {
+        console.log("empty access token");
+        return;
+      }
+      var user2 = spotify.getMe();
+      console.log("Ugh");
+      spotify.getMe().then(
+        async (data) => {
+          console.log("Hi");
+          var user = data.body.id;
+          console.log(user);
+          console.log(data.body);
+          console.log('User attempting to add liked song.');
+          try {
+            const response = await axios.post('http://localhost:3001/api/addlike', JSON.stringify({
+              user,
+              id,
+            }), {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+
+            if (response.status === 200) {
+              console.log('Like added successfully');
+            } else {
+              console.error('Failed to add like');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    
   };
   //song handlers
   const pause = () => {
@@ -64,7 +96,7 @@ function SongTrack({
   }, [audioUrl]);
 
   return (
-    <div className = "flex flex-col items-center justify-between w-28 shadow-md rounded-lg shadow-indigo-950 bg-blue-950">
+    <div className="flex flex-col items-center justify-between w-28 shadow-md rounded-lg shadow-indigo-950 bg-blue-950">
       <div
         className="relative  hover:border-2 hover:border-sky-500"
         onMouseOver={play}
@@ -72,12 +104,12 @@ function SongTrack({
       >
         <img src={imgUrl} alt="" />
         <div className="flex justify-between">
-          <div className = "flex">
+          <div className="flex">
             <img
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer rotate-180"
               src="aakash_unliked.png"
-              onClick={() => addDislikeHandler()}
+              onClick={() => addDislikeHandler(id)}
               alt=""
             />
             <motion.img
@@ -85,7 +117,7 @@ function SongTrack({
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="aakash_unliked.png"
-              onClick={() => addDislikeHandler()}
+              onClick={() => addDislikeHandler(id)}
               alt=""
             />
           </div>
@@ -94,7 +126,7 @@ function SongTrack({
             whileTap={{ scale: "0.8" }}
             className="flex bottom-0 right-0 w-4 sm:w-8 p-1 cursor-pointer"
             src="like.svg"
-            onClick={() => likeSongHandler(id)}
+            onClick={() => likeSongHandler()}
             alt=""
           />
         </div>
