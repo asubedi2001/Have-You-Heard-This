@@ -9,7 +9,9 @@ CREATE TABLE Song (
     track_id VARCHAR(255) PRIMARY KEY,
     track_name VARCHAR(255),
     track_cover VARCHAR(255),
-    track_preview VARCHAR(255)
+    track_preview VARCHAR(255),
+    track_artist VARCHAR(255),
+    track_uri VARCHAR(255)
 );
 
 CREATE TABLE UserLikes (
