@@ -346,7 +346,7 @@ app.post('/api/deleteUser', (req, res) => {
 // API endpoint to handle SQL script to add all recommended songs
 app.post('/api/addsong', (req, res) => {
   console.log("add user request");
-  const { track_id, track_name, track_cover, track_preview } = req.body;
+  const { track_id, track_name, track_cover, track_preview, track_artist, track_uri } = req.body;
 
   // Open the database
   let db = new sqlite3.Database('./database/utr.sqlite3');
@@ -368,8 +368,8 @@ app.post('/api/addsong', (req, res) => {
     // If the user doesn't exist, insert a new entry
     if (!existingEntry) {
       console.log('Inserting song:', track_id, track_name);
-      db.run('INSERT INTO Song (track_id, track_name, track_cover, track_preview) VALUES (?, ?, ?, ?)', 
-          [track_id, track_name, track_cover, track_preview], (err) => {
+      db.run('INSERT INTO Song (track_id, track_name, track_cover, track_preview, track_artist, track_uri) VALUES (?, ?, ?, ?, ?, ?)', 
+          [track_id, track_name, track_cover, track_preview, track_artist, track_uri], (err) => {
           if (err) {
             console.error('Error inserting song:', err);
             res.sendStatus(500); // Send error response
