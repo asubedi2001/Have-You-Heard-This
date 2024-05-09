@@ -198,6 +198,39 @@ app.post('/api/adddislike', (req, res) => {
   }
 });
 
+// API endpoint to handle SQL script to get ALL of user's liked songs.
+app.get('/api/getlikes', (req, res) => {
+  console.log("get likes request");
+  console.log(req.query);
+  const spotify_id = req.query.spotify_id;
+  console.log(spotify_id);
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+  try {
+    const sanityCheck = db.all('SELECT * FROM UserLikes JOIN Song ON UserLikes.track_id=Song.track_id WHERE spotify_id = ?', spotify_id);
+      console.log(sanityCheck);
+
+
+
+    const sql = 'SELECT * \
+    FROM UserLikes \
+    JOIN Song \
+    ON UserLikes.track_id=Song.track_id \
+    WHERE UserLikes.spotify_id = ?';
+    db.all(sql, [spotify_id], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        res.sendStatus(500); // Send error response
+        return;
+      }
+      console.log(rows);
+      res.json(rows);
+    });
+  } catch (error) {
+      console.error('Error:', error);
+      res.sendStatus(500); // Send error response
+  }
+});
+
 // API endpoint to handle SQL script to add user's liked song
 app.post('/api/getlike', (req, res) => {
   console.log("add like request");
@@ -215,7 +248,6 @@ app.post('/api/getlike', (req, res) => {
   
       // Check if the user already exists
       const existingEntry = rows.length > 0;
-      const sanityCheck = db.all('SELECT * FROM UserLikes WHERE spotify_id = ? AND track_id = ?', user, id);
       console.log(existingEntry);
       // If the user doesn't exist, insert a new entry
       if (!existingEntry) {
@@ -269,7 +301,7 @@ app.post('/api/getdislike', (req, res) => {
 // API endpoint to handle SQL script to add all recommended songs
 app.post('/api/addsong', (req, res) => {
   console.log("add user request");
-  const { track_id, track_name, track_cover, track_preview } = req.body;
+  const { track_id, track_name, track_cover, track_preview, track_artist, track_uri } = req.body;
 
   // Open the database
   let db = new sqlite3.Database('./database/utr.sqlite3');
@@ -291,8 +323,8 @@ app.post('/api/addsong', (req, res) => {
     // If the user doesn't exist, insert a new entry
     if (!existingEntry) {
       console.log('Inserting song:', track_id, track_name);
-      db.run('INSERT INTO Song (track_id, track_name, track_cover, track_preview) VALUES (?, ?, ?, ?)', 
-          [track_id, track_name, track_cover, track_preview], (err) => {
+      db.run('INSERT INTO Song (track_id, track_name, track_cover, track_preview, track_artist, track_uri) VALUES (?, ?, ?, ?, ?, ?)', 
+          [track_id, track_name, track_cover, track_preview, track_artist, track_uri], (err) => {
           if (err) {
             console.error('Error inserting song:', err);
             res.sendStatus(500); // Send error response
@@ -361,5 +393,7 @@ app.post('/api/deleteuser', (req, res) => {
   // Close the database connection
   db.close();
 });
+
+
 
 app.listen(3001);

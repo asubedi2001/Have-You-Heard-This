@@ -4,26 +4,25 @@ import SongTrack from "../discover/SongTrack.js";
 import axios from "axios";
 
 function UTRLikes({ spotify }) {
-  const [userProfile, setUserProfile] = useState(null);
-  const [spotify_id, setSpotifyID] = useState(null);
+  console.log("UTR Likes being created...");
   const [userLikes, setUserLikes] = useState(null);
+  
   useEffect(() => {
-    const fetchUserProfile = () => {
+    const fetchUserProfile = async () => {
       if (!spotify) {
         console.log("empty access token");
         return;
       }
-      spotify.getMe().then(
-        (data) => {
-          console.log(data.body);
-          setUserProfile(data.body);
-          setSpotifyID(data.body.uri)
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-      
+      try {
+        spotify.getMe().then(
+            async (data) => {
+              console.log("in data scope" + data.body.uri);
+              getUserLikes(data.body.uri);
+            });
+      } catch (err) {
+        console.error(err);
+        console.log("bad thing happen");
+      }
     };
 
     fetchUserProfile();
@@ -31,25 +30,34 @@ function UTRLikes({ spotify }) {
 
   // Function to get all user UTR likes.
   const getUserLikes = async (spotify_id) => {
+    console.log("START GUL SPOTIFYID");
+    console.log(spotify_id);
+    console.log("END GUL SPOTIFYID");
     try {
-      const response = await axios.post('http://localhost:3001/api/getlikes', JSON.stringify({
-        spotify_id
-      }), {
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await axios.get("http://localhost:3001/api/getlikes",
+        {params: {
+            spotify_id: spotify_id,
+        }},
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      });
+      );
       
       if (response.status === 200) {
+        console.log(response);
         setUserLikes(response.data);
-        console.log("sucessfully retrieved likes")
+        console.log("successfully retrieved likes");
       } else {
-        console.error('Failed to get likes');
+        console.error("Failed to get likes");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
+
+  console.log(userLikes);
 
   return (
     <>
@@ -59,12 +67,11 @@ function UTRLikes({ spotify }) {
           <button className="bg-slate-100 text-slate-900 h-full p-1 rounded-3xl px-3 ">
             <img className="" src="search.svg" width={12} alt="search" />
           </button>
-	    </div>
-        <div className="  min-h-3/4 min-w-full flex items-center justify-center ">
-          {
+        </div>
+        <div className="min-h-3/4 min-w-full flex items-center justify-center ">
+          {userLikes && (
             <div className="grid grid-cols-4 md:grid-cols-10 gap-x-1 max-h-fit">
-            {userLikes.map((item) => {
-              return (
+              {userLikes.map((item) => (
                 <SongTrack
                   imgUrl={item.track_cover}
                   key={item.track_id}
@@ -74,11 +81,10 @@ function UTRLikes({ spotify }) {
                   artist={item.track_artist}
                   uri={item.track_uri}
                   spotify={spotify}
-                  />
-                );
-              })}
-            </div> 
-	         }
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </>

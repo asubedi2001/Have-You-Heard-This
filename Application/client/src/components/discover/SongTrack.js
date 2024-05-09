@@ -194,7 +194,7 @@ function SongTrack({
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="aakash_dislike.png"
-              onClick={() => addDislikeHandler(imgUrl, id)}
+              onClick={() => addDislikeHandler(imgUrl, uri)}
               alt=""
             />
             <motion.img id={song}
@@ -202,7 +202,7 @@ function SongTrack({
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="like.png"
-              onClick={() => addLikeHandler(imgUrl, id, song)}
+              onClick={() => addLikeHandler(imgUrl, uri, song)}
               alt=""
             />
           </div>
@@ -211,7 +211,7 @@ function SongTrack({
             whileTap={{ scale: "0.8" }}
             className="flex bottom-0 right-0 w-4 sm:w-8 p-1 cursor-pointer"
             src="like.svg"
-            onClick={() => likeSongHandler()}
+            onClick={() => likeSongHandler(id)}
             alt=""
           />
         </div>
