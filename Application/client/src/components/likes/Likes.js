@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import SongTrack from "../discover/SongTrack.js";
 
 
@@ -7,15 +7,7 @@ function Likes({ spotify }) {
   const history = useHistory();
   const [result, setResult] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState();
-  const [sliderVal, setSliderVal] = useState(50);
-  const [display, setDisplay] = useState({
-    song: "",
-    image: "",
-    artist: "",
-    warn: "",
-    success: "",
-  });
+
   useEffect(() => {
     // e.preventDefault();
     if (!spotify) {
