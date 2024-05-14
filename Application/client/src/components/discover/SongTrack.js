@@ -199,6 +199,7 @@ function SongTrack({
         <div className="flex justify-between">
           <div className="flex">
             <motion.img id={id}
+              whileHover={{ scale: "1.125"}}
               whileTap={{ scale: "0.8" }}
               className="flex left-0 bottom-0 w-4 sm:w-8 p-1 cursor-pointer"
               src="aakash_dislike.png"

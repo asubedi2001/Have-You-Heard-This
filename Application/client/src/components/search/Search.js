@@ -1,22 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import SongTrack from "../discover/SongTrack.js";
 import axios from "axios";
 
 function Search({ spotify }) {
-  const history = useHistory();
   const [result, setResult] = useState();
   const [age, setAge] = useState('medium_term');
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState();
   const [sliderVal, setSliderVal] = useState(50);
-  const [display, setDisplay] = useState({
-    song: "",
-    image: "",
-    artist: "",
-    warn: "",
-    success: "",
-  });
 
   // Function to add song to Table of all recommended songs.
   const addTrack = async (track_id, track_name, track_cover, track_preview, track_artist, track_uri) => {
@@ -44,27 +34,6 @@ function Search({ spotify }) {
     }
   };
 
-  // Function to add user like
-  const addLike = async (spotify_id, track_id) => {
-    try {
-      const response = await axios.post('http://localhost:3001/api/addlike', JSON.stringify({
-        spotify_id,
-        track_id
-      }), {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (response.status === 200) {
-        console.log('Like added successfully');
-      } else {
-        console.error('Failed to add like');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
 
   const searchSubmitHandler = (e) => {
 
@@ -83,13 +52,11 @@ function Search({ spotify }) {
         }
         
 	      str = artistIds.join(",");
-        console.log(artistIds);
         spotify.getRecommendations({
-	        limit: 24,
+	        limit: 100,
           seed_artists: str,
           max_popularity: (sliderVal+5 < 100 ? sliderVal+5 : 100),
           min_popularity: (sliderVal-20 > 0 ? sliderVal-20 : 0),
-          limit: 100
         }).then(
           (data) => {
             console.log(data);

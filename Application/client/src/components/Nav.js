@@ -74,16 +74,16 @@ function Nav({ spotify }) {
           <AnimatedCard>
             <Link to="/Likeviewer">
               <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                All Likes
+                Community Likes
               </button>
             </Link>
           </AnimatedCard>
         </span>
         <span>         
           <AnimatedCard>
-            <Link to="/UTRdislikes">
+            <Link to="/UTRlikes">
               <img
-                src="aakash_disliked2.png"
+                src="aakash_liked.png"
                 className="cursor-pointer"
                 width={35}
                 alt="Likes"
@@ -93,9 +93,9 @@ function Nav({ spotify }) {
         </span>
         <span>         
           <AnimatedCard>
-            <Link to="/UTRlikes">
+            <Link to="/UTRdislikes">
               <img
-                src="aakash_liked.png"
+                src="aakash_disliked2.png"
                 className="cursor-pointer"
                 width={35}
                 alt="Likes"

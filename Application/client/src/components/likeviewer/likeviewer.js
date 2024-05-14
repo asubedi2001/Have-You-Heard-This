@@ -60,11 +60,11 @@ function Likeviewer({ spotify }) {
                 <table className="table-auto mx-auto">
                   <thead>
                     <tr className="bg-blue-900 text-slate-200">
-                      <th className="px-4 py-2 font-bold">PFP</th>
+                      <th className="px-4 py-2 font-bold"></th>
                       <th className="px-4 py-2 font-bold">Display Name</th>
                       <th className="px-4 py-2 font-bold">Title</th>
                       <th className="px-4 py-2 font-bold">Artist</th>
-                      <th className="px-4 py-2 font-bold">Delete</th>
+                      <th className="px-4 py-2 font-bold"></th>
                     </tr>
                   </thead>
                   <tbody>
