@@ -167,7 +167,7 @@ app.post('/api/addlike', (req, res) => {
   }
 });
 
-// API endpoint to handle SQL script to add user's liked song
+// API endpoint to handle SQL script to add user's disliked song
 app.post('/api/adddislike', (req, res) => {
   console.log("add dislike request");
   const { id, user } = req.body;
@@ -286,7 +286,7 @@ app.get('/api/getdislikes', (req, res) => {
   }
 });
 
-// API endpoint to handle SQL script to add user's liked song
+// API endpoint to handle SQL script to get user's liked song
 app.post('/api/getlike', (req, res) => {
   console.log("get like request");
   const { id, user } = req.body;
@@ -320,7 +320,7 @@ app.post('/api/getlike', (req, res) => {
   }
 });
 
-// API endpoint to handle SQL script to add user's liked song
+// API endpoint to handle SQL script to get user's disliked song
 app.post('/api/getdislike', (req, res) => {
   console.log("add dislike request");
   const { id, user } = req.body;
@@ -449,7 +449,57 @@ app.post('/api/deleteuser', (req, res) => {
   db.close();
 });
 
+// API endpoint to handle SQL script to delete user's liked song
+app.post('/api/deletelike', (req, res) => {
+  console.log("delete like request");
+  const { spotify_id, track_id } = req.body;
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+  try {
+    const sql = 'DELETE FROM UserLikes WHERE spotify_id = ? AND track_id = ?';
+    db.run(sql, [spotify_id, track_id], function(err) {
+      if (err) {
+        console.error('Error querying database:', err);
+        console.log(500);
+        res.sendStatus(500);
+        return;
+      }
+      console.log(200);
+      res.sendStatus(200);
+    });
+  } catch (error) {
+      console.error('Error:', error);
+      console.log(500);
+      res.sendStatus(500); // Send error response
+  } finally {
+    db.close(); // Close the database connection
+  }
+});
 
+// API endpoint to get ALL users info + likes
+app.get('/api/showlikes', (req, res) => {
+  console.log("show likes request");
+  let db = new sqlite3.Database('./database/utr.sqlite3');
+  try {
+
+    const sql = 'SELECT User.spotify_id, User.pfp, User.display_name, Song.track_id,  Song.track_name, Song.track_artist \
+    FROM UserLikes\
+    JOIN Song \
+    ON UserLikes.track_id=Song.track_id \
+    JOIN User\
+    ON UserLikes.spotify_id=User.spotify_id';
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        res.sendStatus(500); // Send error response
+        return;
+      }
+      res.json(rows);
+    });
+  } catch (error) {
+      console.error('Error:', error);
+      res.sendStatus(500); // Send error response
+  }
+});
 
 app.listen(3001);
 
