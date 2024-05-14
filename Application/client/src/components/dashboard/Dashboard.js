@@ -7,6 +7,7 @@ import Likes from "../likes/Likes.js";
 import Userpage from "../userpage/Userpage.js";
 import UTRLikes from "../UTRLikes/UTRLikes.js";
 import UTRDislikes from "../UTRDislikes/UTRDislikes.js";
+import Likeviewer from "../likeviewer/likeviewer.js";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function Dashboard({ code }) {
@@ -20,6 +21,9 @@ function Dashboard({ code }) {
       <BrowserRouter>
         <Nav spotify={spotify}/>
         <Switch>
+          <Route path="/Likeviewer">
+            <Likeviewer spotify={spotify} />
+          </Route>
           <Route path="/UTRdislikes">
             <UTRDislikes spotify={spotify} />
           </Route>

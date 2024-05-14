@@ -72,6 +72,15 @@ function Nav({ spotify }) {
         <div className="flex items-center w-17 text-xs space-x-8 sm:text-sm justify-between">
         <span>         
           <AnimatedCard>
+            <Link to="/Likeviewer">
+              <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                All Likes
+              </button>
+            </Link>
+          </AnimatedCard>
+        </span>
+        <span>         
+          <AnimatedCard>
             <Link to="/UTRdislikes">
               <img
                 src="aakash_disliked2.png"
