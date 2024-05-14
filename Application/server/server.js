@@ -127,7 +127,7 @@ app.post('/api/addlike', (req, res) => {
       // If the user doesn't exist, insert a new entry
       if (!existingEntry) {
         console.log('Inserting user:', user, id);
-        db.run('INSERT INTO UserLikes (spotify_id, track_id) VALUES (?, ?)', 
+        db.run('INSERT INTO UserLikes (id, spotify_id, track_id) VALUES (NULL, ?, ?)', 
           [user, id], (err) => {
             if (err) {
               console.error('Error inserting song:', err);
@@ -187,7 +187,7 @@ app.post('/api/adddislike', (req, res) => {
       // If the user doesn't exist, insert a new entry
       if (!existingEntry) {
         console.log('Inserting user:', user, id);
-        db.run('INSERT INTO UserDislikes (spotify_id, track_id) VALUES (?, ?)', 
+        db.run('INSERT INTO UserDislikes (id, spotify_id, track_id) VALUES (NULL, ?, ?)', 
           [user, id], (err) => {
             if (err) {
               console.error('Error inserting song:', err);
