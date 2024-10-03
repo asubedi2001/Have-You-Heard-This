@@ -1,7 +1,5 @@
-<div style="display: flex; align-items: center;">
-    <img src="https://raw.githubusercontent.com/asubedi2001/Have-You-Heard-This/main/client/public/aakash_logo.png" alt="Logo" width="50" style="margin-right: 10px;"/>
-    <span style="font-size: 36px; font-weight: bold;"> Haveyouheardthis? </span>
-</div>
+<img src="https://raw.githubusercontent.com/asubedi2001/Have-You-Heard-This/main/client/public/aakash_logo.png" alt="logo" width="50" style="vertical-align: middle;"/> **Have you heard this?**
+=======
 
 ### About
 
@@ -25,3 +23,4 @@ Recommendations are generated using Spotify API, and the songs that users like t
 - Cd into server and run `node server.js`
 - Cd into client and run `npm run start`
 - Project will be hosted at localhost:3000, server listening on port 3001.
+
