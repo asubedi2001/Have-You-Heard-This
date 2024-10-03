@@ -1,5 +1,5 @@
 <div style="display: flex; align-items: center;">
-    <img src="https://raw.githubusercontent.com/asubedi2001/Have-You-Heard-This/main/client/public/aakash_logo.png" alt="Logo" width="4" style="margin-right: 10px;"/>
+    <img src="https://raw.githubusercontent.com/asubedi2001/Have-You-Heard-This/main/client/public/aakash_logo.png" alt="Logo" width="50" style="margin-right: 10px;"/>
     <span style="font-size: 36px; font-weight: bold;"> Haveyouheardthis? </span>
 </div>
 
