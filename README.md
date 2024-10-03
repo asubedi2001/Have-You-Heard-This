@@ -16,8 +16,5 @@
 - Install dependencies for server and client individually, using `npm install`
 - Cd into server and run `node server.js`
 - Cd into client and run `npm run start`
-<<<<<<< Updated upstream
 - Project will be hosted at localhost:3000, server listening on port 3001.
-=======
-- Project will be hosted at localhost:3000, server listening on port 3001.
->>>>>>> Stashed changes
+
