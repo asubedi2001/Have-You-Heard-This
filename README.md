@@ -1,14 +1,23 @@
-### Haveyouheardthis?
 
+<h1 text="center">haveyouheardthis?</h1>
 
-In order to run the react portion:
+### Tools used
 
-    git clone the repository
+- React
+- TailwindCSS
+- Nodejs (for Auth Server) 
 
-    run npm install inside of ./Application/client and also ./Application/server
+### How to run
 
-    run "node server.js" inside of ./Application/server
-
-    run "npm run start" inside of ./Application/client
-
-    Project will be hosted at localhost:3000, server listening on port 3001.
+- Fork and Clone this repository
+- Go to [Spotify Developer Dashboard](/developer.spotify.com/dashboard/applications) and create an application
+- Generate ClientID and Client Secret for the application.
+- Update ENV for Server (server/.env.sample) and and Client (client/src/constants/index.js)
+- Install dependencies for server and client individually, using `npm install`
+- Cd into server and run `node server.js`
+- Cd into client and run `npm run start`
+<<<<<<< Updated upstream
+- Project will be hosted at localhost:3000, server listening on port 3001.
+=======
+- Project will be hosted at localhost:3000, server listening on port 3001.
+>>>>>>> Stashed changes
