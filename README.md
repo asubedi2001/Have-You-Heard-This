@@ -1,11 +1,17 @@
 
 <h1 text="center">haveyouheardthis?</h1>
 
+### About
+
+haveyouheardthis? is a project meant to aid in recommending users songs from lesser known artists. 
+Users are asked to login with Spotify, and we use their listening history to let them preview (and save) songs that are similar that they might also like.
+Recommendations are generated using Spotify API, and the songs that users like through the application get added to the user's Spotify likes.
+
 ### Tools used
 
 - React
 - TailwindCSS
-- Nodejs (for Auth Server) 
+- Node (for Auth Server) 
 
 ### How to run
 
